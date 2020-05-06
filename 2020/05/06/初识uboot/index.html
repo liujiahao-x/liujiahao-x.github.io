@@ -10,17 +10,18 @@
 <title>初识uboot - liujiahao blog</title>
 
 
-    <meta name="description" content="title: 初识ubootcategories: ubootdate: 2020-05-06 17:46:31tags:  -uboot  本文学习自朱有鹏老师嵌入式课程，在此标注 起因&amp;emsp;&amp;emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑">
+    <meta name="description" content="本文学习自朱有鹏老师嵌入式课程，在此标注 起因&amp;emsp;&amp;emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑起来。所以现在打算现从uboot入手开始学习。本文旨在对uboot做一个大概的描述。 臆想&amp;emsp;&amp;emsp;linux kernel刚开始">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初识uboot">
 <meta property="og:url" content="https://liujiahao-x.github.io/2020/05/06/%E5%88%9D%E8%AF%86uboot/index.html">
 <meta property="og:site_name" content="liujiahao blog">
-<meta property="og:description" content="title: 初识ubootcategories: ubootdate: 2020-05-06 17:46:31tags:  -uboot  本文学习自朱有鹏老师嵌入式课程，在此标注 起因&amp;emsp;&amp;emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑">
+<meta property="og:description" content="本文学习自朱有鹏老师嵌入式课程，在此标注 起因&amp;emsp;&amp;emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑起来。所以现在打算现从uboot入手开始学习。本文旨在对uboot做一个大概的描述。 臆想&amp;emsp;&amp;emsp;linux kernel刚开始">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liujiahao-x.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-05-06T09:46:31.955Z">
-<meta property="article:modified_time" content="2020-05-06T13:22:32.845Z">
+<meta property="article:published_time" content="2020-05-06T09:46:31.000Z">
+<meta property="article:modified_time" content="2020-05-06T13:29:52.645Z">
 <meta property="article:author" content="liujiahao">
+<meta property="article:tag" content="-uboot">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://liujiahao-x.github.io/images/og_image.png">
 
@@ -135,17 +136,22 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-05-06T09:46:31.955Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-06</time>
+                <time class="level-item has-text-grey" datetime="2020-05-06T09:46:31.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-06</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-06T13:22:32.845Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-06</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-06T13:29:52.645Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-06</time>
                 
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/uboot/">uboot</a>
+                </div>
                 
                 
                 <span class="level-item has-text-grey">
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    5 分钟 读完 (大约 781 个字)
+                    5 分钟 读完 (大约 772 个字)
                 </span>
                 
                 
@@ -158,10 +164,7 @@
         </div>
         
         <div class="content">
-            <hr>
-<p>title: 初识uboot<br>categories: uboot<br>date: 2020-05-06 17:46:31<br>tags:<br>  -uboot</p>
-<hr>
-<p><em>本文学习自朱有鹏老师嵌入式课程，在此标注</em></p>
+            <p><em>本文学习自朱有鹏老师嵌入式课程，在此标注</em></p>
 <h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>&emsp;&emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑起来。所以现在打算现从uboot入手开始学习。本文旨在对uboot做一个大概的描述。</p>
 <h1 id="臆想"><a href="#臆想" class="headerlink" title="臆想"></a>臆想</h1><p>&emsp;&emsp;linux kernel刚开始是躺在flash中的，系统上电后不能直接运行起来（体大难移）。所以就需要一段程序来帮他将一切东西都打点好，比如将内存初始化，然后将kernel丢到内存中，然后kernel挂着根文件才能运行起来。那么，仅仅从主要功能上来讲，好像这一段程序只需要初始化一些内存，然后再讲kernel加载到内存就行了。实则非也，由于kernel的启动是不唯一的，也就是说给kernel在启动之前赋予不同的参数，那么它启动 结束之后就是不同的样子，还有就是要判断启动的过程是不是出错了？哪里出错了？肯定得将之表现出来以供人参考，故而需要串口等监视工具，所以还需要初始化串口驱动等等等等。这段功能强大的 程序，都快比的上一个小的操作系统了，她也被称之为bootloader。那么uboot又是何许人也，uboot算是bootloader的一种，但是她是开源的，由于被许多人使用，故而被越来越完善，逐渐成为人们最常用的一种bootloader。</p>
 <h1 id="uboot主要功能"><a href="#uboot主要功能" class="headerlink" title="uboot主要功能"></a>uboot主要功能</h1><p>1.可以上电直接启动：由于soc设计不同，uboot要对应得更改START.S来实现这一功能。<br>2.能够内核启动并为其传参：可以在uboot中设置一定得参数，然后放在内存的特定位置，然后等到内核启动得时候，就回去这些特定得位置解析这些参数，从而按照设定去启动。<br>3.提供系统部署能力：人要能借助uboot完成整个系统（uboot，kernel，rootfs）在flash上的烧录下载工作。<br>4.具有一定得硬件驱动能力：比如inand，串口，lcd等等，根据不同得情景要能够实现soc级和板级一些硬件得驱动能力。<br>5.生命周期：uboot是裸机程序。一旦开始就会单纯运行uboot不能同时其他程序。一旦uboot结束运行，就没法再回到uboot。uboot启动内核之后就废了，想要再回到uboot只能重启。  </p>
@@ -177,6 +180,16 @@
             </li>
             </ul>
         
+        
+        <hr style="height:1px;margin:1rem 0"/>
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/uboot/" rel="tag">-uboot</a>
+                </div>
+            </div>
+        </div>
         
         
         
@@ -283,7 +296,7 @@
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        1
+                        2
                     </p>
                 </a>
             </div>
@@ -293,7 +306,7 @@
                         标签
                     </p>
                     <p class="title has-text-weight-normal">
-                        1
+                        2
                     </p>
                 </a>
             </div>
