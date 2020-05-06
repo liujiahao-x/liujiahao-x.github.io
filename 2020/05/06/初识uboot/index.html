@@ -7,21 +7,20 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>浅谈I2C - liujiahao blog</title>
+<title>初识uboot - liujiahao blog</title>
 
 
-    <meta name="description" content="原理&amp;emsp;&amp;emsp;I2C是一种工作在低速，短距离情况下用来传输数据的通信接口。她总共就只有两根线，一根为SCK(serial clock串行时钟线)，一根为SDA(serial data串行数据线)。由此不难看出，她是一种串行的，同步的通信方式。至于信号传输的方向，这里着重说一下。对于通信双方，有主（master）从（slave）之分，在一个确定的通信环境下面，一个master可以对应多">
+    <meta name="description" content="title: 初识ubootcategories: ubootdate: 2020-05-06 17:46:31tags:  -uboot  本文学习自朱有鹏老师嵌入式课程，在此标注 起因&amp;emsp;&amp;emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅谈I2C">
-<meta property="og:url" content="https://liujiahao-x.github.io/2020/05/02/%E6%B5%85%E8%B0%88I2C/index.html">
+<meta property="og:title" content="初识uboot">
+<meta property="og:url" content="https://liujiahao-x.github.io/2020/05/06/%E5%88%9D%E8%AF%86uboot/index.html">
 <meta property="og:site_name" content="liujiahao blog">
-<meta property="og:description" content="原理&amp;emsp;&amp;emsp;I2C是一种工作在低速，短距离情况下用来传输数据的通信接口。她总共就只有两根线，一根为SCK(serial clock串行时钟线)，一根为SDA(serial data串行数据线)。由此不难看出，她是一种串行的，同步的通信方式。至于信号传输的方向，这里着重说一下。对于通信双方，有主（master）从（slave）之分，在一个确定的通信环境下面，一个master可以对应多">
+<meta property="og:description" content="title: 初识ubootcategories: ubootdate: 2020-05-06 17:46:31tags:  -uboot  本文学习自朱有鹏老师嵌入式课程，在此标注 起因&amp;emsp;&amp;emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liujiahao-x.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-05-02T01:32:12.000Z">
-<meta property="article:modified_time" content="2020-05-02T13:49:25.870Z">
+<meta property="article:published_time" content="2020-05-06T09:46:31.955Z">
+<meta property="article:modified_time" content="2020-05-06T13:19:07.761Z">
 <meta property="article:author" content="liujiahao">
-<meta property="article:tag" content="-I2C">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://liujiahao-x.github.io/images/og_image.png">
 
@@ -130,28 +129,23 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <i class="fas fa-angle-double-right"></i>浅谈I2C
+                <i class="fas fa-angle-double-right"></i>初识uboot
             
         </h1>
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-05-02T01:32:12.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-02</time>
+                <time class="level-item has-text-grey" datetime="2020-05-06T09:46:31.955Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-06</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-02T13:49:25.870Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-02</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-06T13:19:07.761Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-06</time>
                 
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a>
-                </div>
                 
                 
                 <span class="level-item has-text-grey">
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    8 分钟 读完 (大约 1221 个字)
+                    5 分钟 读完 (大约 781 个字)
                 </span>
                 
                 
@@ -164,38 +158,25 @@
         </div>
         
         <div class="content">
-            <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>&emsp;&emsp;<em>I2C是一种工作在低速，短距离情况下用来传输数据的通信接口。她总共就只有两根线，一根为SCK(serial clock串行时钟线)，一根为SDA(serial data串行数据线)。由此不难看出，她是一种串行的，同步的通信方式。至于信号传输的方向，这里着重说一下。对于通信双方，有主（master）从（slave）之分，在一个确定的通信环境下面，一个master可以对应多个slave（在通信环境确定的情况下，master和slave的角色一般是确定的，不太容易更改），从而实现分时分对象的控制。那么问题来了，那么多的slave，master是如何辨别哪个是哪个呢，I2C的解决方案是通过地址来区分，一般情况下，每个slave都有一个7bit的地址，其中高四位是器件类型，由生产方来决定，低四位有硬件逻辑来编程（也就是说当硬件电路确定了之后，那么slave的地址也就确定了）。然后，通信双方就可以按照规定好的协议开始愉快的交流了。</em></p>
-<h1 id="I2C通信协议"><a href="#I2C通信协议" class="headerlink" title="I2C通信协议"></a>I2C通信协议</h1><p>&emsp;&emsp; <em>话不多说，直接上图</em>      </p>
-<img src="https://github.com/liujiahao-x/pictures/blob/master/other%20pictures/picture%20of%20%20I2C.png?raw=true" width = "600" height = "300" alt="" align=center/>    
-
-<p>&emsp;&emsp; 当master想要给slave发送信息时（write mode），通信开始后，先给SDA发送1byte的数据，这一段数据为：高7位slave的地址+0。然后等待对应的slave发送一个应答信号（ACK），当master收到ACK后，就给slave发送1byte的数据，然后slave收到信息了，就再给master发送一个ACK，至此，一个通信周期结束。<br>&emsp;&emsp; 当slave要给master发送数据时（read mode），通信开始后，master先给SDA发送1byte的数据，数据为：高7位的slave地址+1（用1和0来区别到底是都还是写）。然后slave先ACK，然后紧接着就发送过来1byte的数据，发送完之后，等待master的ACK，之后一个通信周期结束。<br>&emsp;&emsp; <em>各位看官看到这里，是不是对I2C通信协议有了大概的了解呢，但是心里肯定还是有不少疑惑，比如说，数据全部都是通过电平信号来传输的，那么我怎么知道什么情况下通信开始？什么情况下通信结束？是么样的信号算是应答信号？各种信号在时间上又如何调节呢？莫急，我们再上图</em></p>
-<img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/I2C%E6%97%B6%E5%BA%8F%E5%9B%BE.JPG?raw=true" width = "600" height = "300" alt="" align=center/>      
-
-<p>&emsp;&emsp; <em>这前面这两张图片时三星某soc的datasheet上抠下来的，这里做个说明</em>    </p>
-<p>&emsp;&emsp; 言归正传，大家看到这张图片是不是有点恍恍然的感觉呢，没错，这张时序图可以将我们之前的疑惑一一解除。首先，我们是否还记得最前面说过得I2C是一个同步通信得方式，那么，如何把握节奏就不言而喻了，就是通过时钟信号来调控。当某一个时刻，SCK为高电平时，SDA上出现了一个下降沿，那么意味着，通信开始，要开始搞事情了。然后master二话不说，先丢1byte得数据过去，告诉众slave，该谁了，该干啥了。然后slave如果没挂（通信时有时候从机会莫名奇妙得由于各种奇葩得原因挂掉）的话，就会站出来说一声，在呢（也就是发送一个ACK给master）。那么具体如何实现ACK呢？I2C总线上的数据时1byte1byte传输的，每传输1byte的数据需要8个时钟周期，当1byte数据传输完毕之后，总线会被控制为高电平(总线释放)，当第九个脉冲之前，应答方将之拉低成了低电平，而且在第九个时钟高电平的时候保持低电平则称之为ACK；要是没有反应，继续保持为高电平，则称之为NACK。然后就是数据传输，又是一个字节，然后ACK，之后完事收工，总线在SCL期间恢复到高电平，即完成一个上升沿，一切的一切恢复如初，好像什么都没有发生过。</p>
-<p>&emsp;&emsp; <em>至此，对I2C算是有了一个粗浅的了解。如文章中有不足之处，还望指正。</em></p>
+            <hr>
+<p>title: 初识uboot<br>categories: uboot<br>date: 2020-05-06 17:46:31<br>tags:<br>  -uboot</p>
+<hr>
+<p><em>本文学习自朱有鹏老师嵌入式课程，在此标注</em></p>
+<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>&emsp;&emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑起来。所以现在打算现从uboot入手开始学习。本文旨在对uboot做一个大概的描述。</p>
+<h1 id="臆想"><a href="#臆想" class="headerlink" title="臆想"></a>臆想</h1><p>&emsp;&emsp;linux kernel刚开始是躺在flash中的，系统上电后不能直接运行起来（体大难移）。所以就需要一段程序来帮他将一切东西都打点好，比如将内存初始化，然后将kernel丢到内存中，然后kernel挂着根文件才能运行起来。那么，仅仅从主要功能上来讲，好像这一段程序只需要初始化一些内存，然后再讲kernel加载到内存就行了。实则非也，由于kernel的启动是不唯一的，也就是说给kernel在启动之前赋予不同的参数，那么它启动 结束之后就是不同的样子，还有就是要判断启动的过程是不是出错了？哪里出错了？肯定得将之表现出来以供人参考，故而需要串口等监视工具，所以还需要初始化串口驱动等等等等。这段功能强大的 程序，都快比的上一个小的操作系统了，她也被称之为bootloader。那么uboot又是何许人也，uboot算是bootloader的一种，但是她是开源的，由于被许多人使用，故而被越来越完善，逐渐成为人们最常用的一种bootloader。</p>
+<h1 id="uboot主要功能"><a href="#uboot主要功能" class="headerlink" title="uboot主要功能"></a>uboot主要功能</h1><p>1.可以上电直接启动：由于soc设计不同，uboot要对应得更改START.S来实现这一功能。<br>2.能够内核启动并为其传参：可以在uboot中设置一定得参数，然后放在内存的特定位置，然后等到内核启动得时候，就回去这些特定得位置解析这些参数，从而按照设定去启动。<br>3.提供系统部署能力：人要能借助uboot完成整个系统（uboot，kernel，rootfs）在flash上的烧录下载工作。<br>4.具有一定得硬件驱动能力：比如inand，串口，lcd等等，根据不同得情景要能够实现soc级和板级一些硬件得驱动能力。<br>5.生命周期：uboot是裸机程序。一旦开始就会单纯运行uboot不能同时其他程序。一旦uboot结束运行，就没法再回到uboot。uboot启动内核之后就废了，想要再回到uboot只能重启。  </p>
 
         </div>
         
             <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://liujiahao-x.github.io/2020/05/02/%E6%B5%85%E8%B0%88I2C/">浅谈I2C</a></li>
+            <li><strong>本文标题：</strong><a href="https://liujiahao-x.github.io/2020/05/06/%E5%88%9D%E8%AF%86uboot/">初识uboot</a></li>
             <li><strong>本文作者：</strong><a href="https://liujiahao-x.github.io">liujiahao</a></li>
-            <li><strong>本文链接：</strong><a href="https://liujiahao-x.github.io/2020/05/02/%E6%B5%85%E8%B0%88I2C/">https://liujiahao-x.github.io/2020/05/02/%E6%B5%85%E8%B0%88I2C/</a></li>
-            <li><strong>发布时间：</strong>2020-05-02</li>
+            <li><strong>本文链接：</strong><a href="https://liujiahao-x.github.io/2020/05/06/%E5%88%9D%E8%AF%86uboot/">https://liujiahao-x.github.io/2020/05/06/%E5%88%9D%E8%AF%86uboot/</a></li>
+            <li><strong>发布时间：</strong>2020-05-06</li>
             <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
             </li>
             </ul>
         
-        
-        <hr style="height:1px;margin:1rem 0"/>
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/I2C/" rel="tag">-I2C</a>
-                </div>
-            </div>
-        </div>
         
         
         
@@ -214,13 +195,13 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/05/06/%E5%88%9D%E8%AF%86uboot/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">初识uboot</span>
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/05/02/%E6%B5%85%E8%B0%88I2C/">
+                <span class="level-item">浅谈I2C</span>
+                <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
-        
         
     </div>
 </div>
@@ -349,13 +330,17 @@
                     目录
                 </h3>
                 <ul class="menu-list"><li>
-        <a class="is-flex" href="#原理">
+        <a class="is-flex" href="#起因">
         <span class="has-mr-6">1</span>
-        <span>原理</span>
+        <span>起因</span>
         </a></li><li>
-        <a class="is-flex" href="#I2C通信协议">
+        <a class="is-flex" href="#臆想">
         <span class="has-mr-6">2</span>
-        <span>I2C通信协议</span>
+        <span>臆想</span>
+        </a></li><li>
+        <a class="is-flex" href="#uboot主要功能">
+        <span class="has-mr-6">3</span>
+        <span>uboot主要功能</span>
         </a></li></ul>
             </div>
         </div>
