@@ -140,7 +140,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-06T13:39:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-06</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-06T15:17:22.368Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-06</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-07T04:00:00.700Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-07</time>
                 
                 
                 <div class="level-item">
@@ -153,7 +153,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    3 分钟 读完 (大约 486 个字)
+                    4 分钟 读完 (大约 652 个字)
                 </span>
                 
                 
@@ -169,9 +169,14 @@
 <h3 id="有些命令会带参数"><a href="#有些命令会带参数" class="headerlink" title="有些命令会带参数"></a>有些命令会带参数</h3><p>不带：print/printenv<br>可带不可带：help（不带参数信息不详细，带参数信息详细）<br>必须带参数：set/setenv  </p>
 <h3 id="命令中的特殊符号"><a href="#命令中的特殊符号" class="headerlink" title="命令中的特殊符号"></a>命令中的特殊符号</h3><p>&lt;1&gt;uboot中一些特殊的符号有专门的意思，比如说单引号，目的是为了告诉uboot单引号里面的内容是一整块，不是分开的。<br>&lt;2&gt;分号用来将两个命令隔开  </p>
 <h3 id="有些命令是一个命令族。"><a href="#有些命令是一个命令族。" class="headerlink" title="有些命令是一个命令族。"></a>有些命令是一个命令族。</h3><p>&emsp;&emsp;好多个命令都是用同一个开头，后面的部分不同，添加的参数参数和功能也不同，比如说movi命令。但是同一命令族的命令在功能上有很大的关联。比如movi命令族主要对（emmc，inand）进行操作。</p>
-<h2 id="uboot常用命令"><a href="#uboot常用命令" class="headerlink" title="uboot常用命令"></a>uboot常用命令</h2><h3 id="print-printevn"><a href="#print-printevn" class="headerlink" title="print/printevn"></a>print/printevn</h3><p>官方解释如下  </p>
+<h2 id="uboot常用命令"><a href="#uboot常用命令" class="headerlink" title="uboot常用命令"></a>uboot常用命令</h2><h3 id="print-printenv"><a href="#print-printenv" class="headerlink" title="print/printenv"></a>print/printenv</h3><p>官方解释如下  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">printenv</span><br><span class="line">    - print values of all environment variables</span><br><span class="line">printenv name ...</span><br><span class="line">    - print value of environment variable &#39;name&#39;</span><br></pre></td></tr></table></figure>
-<p>由上可以看出，print/printevn有两种使用方式<br>&lt;1&gt;<code>print</code>: 用来打印出所有的环境变量。<br>&lt;2&gt;<code>print name</code>：打印出特定的环境变量。  </p>
+<p>由上可以看出，print/printenv有两种使用方式<br>&lt;1&gt;<code>print</code>        //用来打印出所有的环境变量。<br>&lt;2&gt;<code>print name</code>   //打印出特定的环境变量。  </p>
+<h3 id="set-setenv"><a href="#set-setenv" class="headerlink" title="set/setenv"></a>set/setenv</h3><p>官方解释如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">setenv name value ...</span><br><span class="line">    - set environment variable &#39;name&#39; to &#39;value ...&#39;</span><br><span class="line">setenv name</span><br><span class="line">    - delete environment variable &#39;name&#39;</span><br></pre></td></tr></table></figure>
+<p>由上可以看出set/setenv有两种使用方式：<br>&lt;1&gt;<code>set name value</code>      //给名为name的环境变量赋值为value<br>&lt;2&gt;<code>set name</code>             //删除环境变量name</p>
+<h3 id="save-save"><a href="#save-save" class="headerlink" title="save/save"></a>save/save</h3><p><code>save</code>        //将改变的环境变量值存储到flash中</p>
+<p>题外话：每次系统上电之后，uboot都会将环境变量从flash中加载一份到ddr（内存）中，每次set的时候，都是对ddr中的环境变量进行改变，直到save指令后，ddr中的环境变量才会覆盖原来flash中的环境变量。</p>
 
         </div>
         
