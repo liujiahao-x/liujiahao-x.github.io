@@ -122,6 +122,67 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
+                <a class="has-link-black-ter" href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/"><i class="fas fa-angle-double-right"></i>初识linux内核</a>
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-07T14:25:11.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-07</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-08T06:16:29.534Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-08</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    4 分钟 读完 (大约 671 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2 id="到底什么是操作系统？"><a href="#到底什么是操作系统？" class="headerlink" title="到底什么是操作系统？"></a>到底什么是操作系统？</h2><p>&emsp;&emsp;具象化来讲就是linux，windows，android，ucos等都属于操作系统。操作系统本质上是一个程序，由很多源文件构成，需要编译链接成操作系统程序（vmlinz，zimage）。主要功能是管理计算机硬件，给应用程序提供运行环境。</p>
+<h2 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h2><h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>&emsp;&emsp;没有操作系统的话，就需要程序员自己管理内存，万一出现内存复用的情况，很容易造成代码冲突。但是有了操作系统之后，每一次内存的使用，都需要向操作系统申请注册，这样，就会保证内存一般不会冲突。</p>
+<h3 id="进程调度功能"><a href="#进程调度功能" class="headerlink" title="进程调度功能"></a>进程调度功能</h3><p>&emsp;&emsp;操作系统下支持多个应用程序同时运行。这是宏观上的并行和微观上的串行。</p>
+<h3 id="硬件设备的管理"><a href="#硬件设备的管理" class="headerlink" title="硬件设备的管理"></a>硬件设备的管理</h3><p>&emsp;&emsp;没有操作系统时，控制任何硬件都要自己写代码，有了操作系统之后，操作系统自会控制硬件，应用程序不需要考虑硬件的具体细节。操作系统的硬件设备管理模块就是驱动模块。</p>
+<h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>&emsp;&emsp;文件系统是管理存储设备的一种方式。存储设备是由很多个扇区组成，存储设备要以扇区为单位进行读写。没有一种管理机制的话，程序就要记住哪个扇区里面存了什么东西，显然这是不现实的。而文件系统像是一个书的目录，可以用来管理哪一部分扇区存储了啥。</p>
+<h2 id="扩展功能"><a href="#扩展功能" class="headerlink" title="扩展功能"></a>扩展功能</h2><h3 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h3><h3 id="有用的应用程序包"><a href="#有用的应用程序包" class="headerlink" title="有用的应用程序包"></a>有用的应用程序包</h3><p>&emsp;&emsp; 应用程序本身不属于操作系统内核，而是可以通过功能需求 进行增减的。</p>
+<h2 id="内核和发行版的区别"><a href="#内核和发行版的区别" class="headerlink" title="内核和发行版的区别"></a>内核和发行版的区别</h2><p>&emsp;&emsp;内核只负责实现操作系统的核心功能，比如：内存管理，进度调控等等等等，应用程序并不包括在内。当一个操作系统基于内核，又包含了许多应用程序包等等面向使用者的接口，就可以称之为操作系统。由于不同产家根据不同的需求基于内核开发出各种内核的操作系统，称之为发行版。  </p>
+<h3 id="内核只有一个"><a href="#内核只有一个" class="headerlink" title="内核只有一个"></a>内核只有一个</h3><p><a href="www.kernel.org">linux内核网址</a>  </p>
+<h3 id="发行版很多"><a href="#发行版很多" class="headerlink" title="发行版很多"></a>发行版很多</h3><p>ubuntu，redhat，centos等等。</p>
+
+        </div>
+        
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
                 <a class="has-link-black-ter" href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fas fa-angle-double-right"></i>uboot常用命令</a>
             
         </h1>
@@ -130,12 +191,12 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-06T13:39:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-06</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-07T04:00:00.700Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-07</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-07T14:26:12.856Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-07</time>
                 
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/uboot/">uboot</a>
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>
                 </div>
                 
                 
@@ -346,7 +407,7 @@
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        3
+                        4
                     </p>
                 </a>
             </div>
@@ -356,7 +417,7 @@
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        2
+                        3
                     </p>
                 </a>
             </div>
@@ -366,7 +427,7 @@
                         标签
                     </p>
                     <p class="title has-text-weight-normal">
-                        3
+                        4
                     </p>
                 </a>
             </div>
@@ -404,7 +465,7 @@
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/I2C/" style="font-size: 10px;">-I2C</a> <a href="/tags/uboot/" style="font-size: 10px;">-uboot</a> <a href="/tags/uboot%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">-uboot命令</a>
+        <a href="/tags/I2C/" style="font-size: 10px;">-I2C</a> <a href="/tags/linux-kernel/" style="font-size: 10px;">-linux kernel</a> <a href="/tags/uboot/" style="font-size: 10px;">-uboot</a> <a href="/tags/uboot%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">-uboot命令</a>
     </div>
 </div>
 
@@ -424,7 +485,7 @@
                     <span class="level-item">五月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">3</span>
+                    <span class="level-item tag">4</span>
                 </span>
             </a>
         </li>
@@ -446,6 +507,25 @@
         
         <article class="media">
             
+            <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="初识linux内核">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-07T14:25:11.000Z">2020-05-07</time></div>
+                    <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初识linux内核</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="uboot常用命令">
@@ -457,7 +537,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-06T13:39:26.000Z">2020-05-06</time></div>
                     <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">uboot常用命令</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/uboot/">uboot</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
                     </p>
                 </div>
             </div>
@@ -513,12 +593,20 @@
             </h3>
             <ul class="menu-list">
             <li>
+        <a class="level is-marginless" href="/categories/linux/">
+            <span class="level-start">
+                <span class="level-item">linux</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/uboot/">
             <span class="level-start">
                 <span class="level-item">uboot</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">2</span>
+                <span class="level-item tag">1</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/%E9%80%9A%E4%BF%A1/">
@@ -553,6 +641,25 @@
         
         <article class="media">
             
+            <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="初识linux内核">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-07T14:25:11.000Z">2020-05-07</time></div>
+                    <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初识linux内核</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="uboot常用命令">
@@ -564,7 +671,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-06T13:39:26.000Z">2020-05-06</time></div>
                     <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">uboot常用命令</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/uboot/">uboot</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
                     </p>
                 </div>
             </div>
@@ -620,12 +727,20 @@
             </h3>
             <ul class="menu-list">
             <li>
+        <a class="level is-marginless" href="/categories/linux/">
+            <span class="level-start">
+                <span class="level-item">linux</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/uboot/">
             <span class="level-start">
                 <span class="level-item">uboot</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">2</span>
+                <span class="level-item tag">1</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/%E9%80%9A%E4%BF%A1/">
