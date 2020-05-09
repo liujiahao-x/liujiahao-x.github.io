@@ -7,21 +7,20 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>uboot常用命令 - liujiahao blog</title>
+<title>内核篇1 - liujiahao blog</title>
 
 
-    <meta name="description" content="linux命令行界面缓冲机制&amp;emsp;&amp;emsp;uboot的命令的读取采用的是行缓冲的机制。   行缓冲&amp;emsp;&amp;emsp;在命令行界面下，执行行缓冲，就是说，当你向界面输入命令的时候，输入的东西会先进入缓冲区，不会执行，但是当按下回车键之后，所有刚才输入的东西才会整个拿来分析执行。 无缓冲&amp;emsp;&amp;emsp;无缓冲就是每输入一个字符，系统就会分析处理该字符。 全缓冲&amp;emsp;&amp;em">
+    <meta name="description" content="关于驱动驱动为内核中硬件设备管理模块&amp;emsp;&amp;emsp;硬件设备的运行需要驱动代码，裸机开发中驱动代码需要专门写出来。但是在操作系统中，驱动代码嵌入到了内核里。由于每一种硬件设备需要一种驱动，所以说，内核的版本总是在更新之中。 驱动工作在内核态&amp;emsp;&amp;emsp;对于单核的cpu来讲，微观上cpu在某一刻只能运行一条指令。如果运行的代码属于内核，则为内核态；运行的代码属于应用程序，则为用户">
 <meta property="og:type" content="article">
-<meta property="og:title" content="uboot常用命令">
-<meta property="og:url" content="https://liujiahao-x.github.io/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:title" content="内核篇1">
+<meta property="og:url" content="https://liujiahao-x.github.io/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/index.html">
 <meta property="og:site_name" content="liujiahao blog">
-<meta property="og:description" content="linux命令行界面缓冲机制&amp;emsp;&amp;emsp;uboot的命令的读取采用的是行缓冲的机制。   行缓冲&amp;emsp;&amp;emsp;在命令行界面下，执行行缓冲，就是说，当你向界面输入命令的时候，输入的东西会先进入缓冲区，不会执行，但是当按下回车键之后，所有刚才输入的东西才会整个拿来分析执行。 无缓冲&amp;emsp;&amp;emsp;无缓冲就是每输入一个字符，系统就会分析处理该字符。 全缓冲&amp;emsp;&amp;em">
+<meta property="og:description" content="关于驱动驱动为内核中硬件设备管理模块&amp;emsp;&amp;emsp;硬件设备的运行需要驱动代码，裸机开发中驱动代码需要专门写出来。但是在操作系统中，驱动代码嵌入到了内核里。由于每一种硬件设备需要一种驱动，所以说，内核的版本总是在更新之中。 驱动工作在内核态&amp;emsp;&amp;emsp;对于单核的cpu来讲，微观上cpu在某一刻只能运行一条指令。如果运行的代码属于内核，则为内核态；运行的代码属于应用程序，则为用户">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liujiahao-x.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-05-06T13:39:26.000Z">
-<meta property="article:modified_time" content="2020-05-07T14:26:12.856Z">
+<meta property="article:published_time" content="2020-05-09T00:37:38.000Z">
+<meta property="article:modified_time" content="2020-05-09T03:23:03.679Z">
 <meta property="article:author" content="liujiahao">
-<meta property="article:tag" content="-uboot命令">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://liujiahao-x.github.io/images/og_image.png">
 
@@ -130,15 +129,15 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <i class="fas fa-angle-double-right"></i>uboot常用命令
+                <i class="fas fa-angle-double-right"></i>内核篇1
             
         </h1>
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-05-06T13:39:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-06</time>
+                <time class="level-item has-text-grey" datetime="2020-05-09T00:37:38.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-09</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-07T14:26:12.856Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-07</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-09T03:23:03.679Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-09</time>
                 
                 
                 <div class="level-item">
@@ -151,7 +150,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    4 分钟 读完 (大约 652 个字)
+                    3 分钟 读完 (大约 523 个字)
                 </span>
                 
                 
@@ -164,44 +163,23 @@
         </div>
         
         <div class="content">
-            <h2 id="linux命令行界面缓冲机制"><a href="#linux命令行界面缓冲机制" class="headerlink" title="linux命令行界面缓冲机制"></a>linux命令行界面缓冲机制</h2><p>&emsp;&emsp;uboot的命令的读取采用的是行缓冲的机制。  </p>
-<h3 id="行缓冲"><a href="#行缓冲" class="headerlink" title="行缓冲"></a>行缓冲</h3><p>&emsp;&emsp;在命令行界面下，执行行缓冲，就是说，当你向界面输入命令的时候，输入的东西会先进入缓冲区，不会执行，但是当按下回车键之后，所有刚才输入的东西才会整个拿来分析执行。</p>
-<h3 id="无缓冲"><a href="#无缓冲" class="headerlink" title="无缓冲"></a>无缓冲</h3><p>&emsp;&emsp;无缓冲就是每输入一个字符，系统就会分析处理该字符。</p>
-<h3 id="全缓冲"><a href="#全缓冲" class="headerlink" title="全缓冲"></a>全缓冲</h3><p>&emsp;&emsp;全缓冲就是在输入字符后，直到缓冲区满，不然系统一直都不会去处理。</p>
-<h2 id="uboot指令的特点"><a href="#uboot指令的特点" class="headerlink" title="uboot指令的特点"></a>uboot指令的特点</h2><h3 id="有些命令有简化的别名"><a href="#有些命令有简化的别名" class="headerlink" title="有些命令有简化的别名"></a>有些命令有简化的别名</h3><p>print==printenv<br>set==setenv  </p>
-<h3 id="有些命令会带参数"><a href="#有些命令会带参数" class="headerlink" title="有些命令会带参数"></a>有些命令会带参数</h3><p>不带：print/printenv<br>可带不可带：help（不带参数信息不详细，带参数信息详细）<br>必须带参数：set/setenv  </p>
-<h3 id="命令中的特殊符号"><a href="#命令中的特殊符号" class="headerlink" title="命令中的特殊符号"></a>命令中的特殊符号</h3><p>&lt;1&gt;uboot中一些特殊的符号有专门的意思，比如说单引号，目的是为了告诉uboot单引号里面的内容是一整块，不是分开的。<br>&lt;2&gt;分号用来将两个命令隔开  </p>
-<h3 id="有些命令是一个命令族。"><a href="#有些命令是一个命令族。" class="headerlink" title="有些命令是一个命令族。"></a>有些命令是一个命令族。</h3><p>&emsp;&emsp;好多个命令都是用同一个开头，后面的部分不同，添加的参数参数和功能也不同，比如说movi命令。但是同一命令族的命令在功能上有很大的关联。比如movi命令族主要对（emmc，inand）进行操作。</p>
-<h2 id="uboot常用命令"><a href="#uboot常用命令" class="headerlink" title="uboot常用命令"></a>uboot常用命令</h2><h3 id="print-printenv"><a href="#print-printenv" class="headerlink" title="print/printenv"></a>print/printenv</h3><p>官方解释如下  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">printenv</span><br><span class="line">    - print values of all environment variables</span><br><span class="line">printenv name ...</span><br><span class="line">    - print value of environment variable &#39;name&#39;</span><br></pre></td></tr></table></figure>
-<p>由上可以看出，print/printenv有两种使用方式<br>&lt;1&gt;<code>print</code>        //用来打印出所有的环境变量。<br>&lt;2&gt;<code>print name</code>   //打印出特定的环境变量。  </p>
-<h3 id="set-setenv"><a href="#set-setenv" class="headerlink" title="set/setenv"></a>set/setenv</h3><p>官方解释如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">setenv name value ...</span><br><span class="line">    - set environment variable &#39;name&#39; to &#39;value ...&#39;</span><br><span class="line">setenv name</span><br><span class="line">    - delete environment variable &#39;name&#39;</span><br></pre></td></tr></table></figure>
-<p>由上可以看出set/setenv有两种使用方式：<br>&lt;1&gt;<code>set name value</code>      //给名为name的环境变量赋值为value<br>&lt;2&gt;<code>set name</code>             //删除环境变量name</p>
-<h3 id="save-save"><a href="#save-save" class="headerlink" title="save/save"></a>save/save</h3><p><code>save</code>        //将改变的环境变量值存储到flash中</p>
-<p>题外话：每次系统上电之后，uboot都会将环境变量从flash中加载一份到ddr（内存）中，每次set的时候，都是对ddr中的环境变量进行改变，直到save指令后，ddr中的环境变量才会覆盖原来flash中的环境变量。</p>
-
+            <h2 id="关于驱动"><a href="#关于驱动" class="headerlink" title="关于驱动"></a>关于驱动</h2><h3 id="驱动为内核中硬件设备管理模块"><a href="#驱动为内核中硬件设备管理模块" class="headerlink" title="驱动为内核中硬件设备管理模块"></a>驱动为内核中硬件设备管理模块</h3><p>&emsp;&emsp;硬件设备的运行需要驱动代码，裸机开发中驱动代码需要专门写出来。但是在操作系统中，驱动代码嵌入到了内核里。由于每一种硬件设备需要一种驱动，所以说，内核的版本总是在更新之中。</p>
+<h3 id="驱动工作在内核态"><a href="#驱动工作在内核态" class="headerlink" title="驱动工作在内核态"></a>驱动工作在内核态</h3><p>&emsp;&emsp;对于单核的cpu来讲，微观上cpu在某一刻只能运行一条指令。如果运行的代码属于内核，则为内核态；运行的代码属于应用程序，则为用户态。</p>
+<h3 id="驱动程运行时具有很高的权限"><a href="#驱动程运行时具有很高的权限" class="headerlink" title="驱动程运行时具有很高的权限"></a>驱动程运行时具有很高的权限</h3><p>&emsp;&emsp;由于驱动是运行在内核态的，所以她在运行时，具有最高的权限，也就是说可以任意访问读写内存的任何部分。所以说，驱动开发也伴随着很高的风险，一个不慎，就可能导致内核崩溃，出现安全漏洞。</p>
+<h2 id="关于应用程序"><a href="#关于应用程序" class="headerlink" title="关于应用程序"></a>关于应用程序</h2><h3 id="应用程序是整个系统的最终目标"><a href="#应用程序是整个系统的最终目标" class="headerlink" title="应用程序是整个系统的最终目标"></a>应用程序是整个系统的最终目标</h3><p>&emsp;&emsp;无论是硬件还是内核，最终的目的就是为用户提供使用功能，而这些功能都是由应用程序来提供的。所以说，应用程序是整个操作系统的最终目标。</p>
+<h3 id="应用程序不属于内核，而是在内核之上"><a href="#应用程序不属于内核，而是在内核之上" class="headerlink" title="应用程序不属于内核，而是在内核之上"></a>应用程序不属于内核，而是在内核之上</h3><h3 id="应用程序工作在用户态，是受到限制的。"><a href="#应用程序工作在用户态，是受到限制的。" class="headerlink" title="应用程序工作在用户态，是受到限制的。"></a>应用程序工作在用户态，是受到限制的。</h3><h3 id="应用程序出现问题一般不会导致内核崩溃。"><a href="#应用程序出现问题一般不会导致内核崩溃。" class="headerlink" title="应用程序出现问题一般不会导致内核崩溃。"></a>应用程序出现问题一般不会导致内核崩溃。</h3><h3 id="应用程序通过内核定义的API来调用内核工作。"><a href="#应用程序通过内核定义的API来调用内核工作。" class="headerlink" title="应用程序通过内核定义的API来调用内核工作。"></a>应用程序通过内核定义的API来调用内核工作。</h3><h2 id="关于根文件系统"><a href="#关于根文件系统" class="headerlink" title="关于根文件系统"></a>关于根文件系统</h2><p>&emsp;&emsp; 根文件系统为操作系统启动提供了很多东西：根目录，进程1。</p>
+<h3 id="根文件系统提供根目录"><a href="#根文件系统提供根目录" class="headerlink" title="根文件系统提供根目录"></a>根文件系统提供根目录</h3><h3 id="根文件系统提供根目录-1"><a href="#根文件系统提供根目录-1" class="headerlink" title="根文件系统提供根目录"></a>根文件系统提供根目录</h3><h3 id="进程1存放在根文件系统中"><a href="#进程1存放在根文件系统中" class="headerlink" title="进程1存放在根文件系统中"></a>进程1存放在根文件系统中</h3><h3 id="内核启动最后会装在根文件系统"><a href="#内核启动最后会装在根文件系统" class="headerlink" title="内核启动最后会装在根文件系统"></a>内核启动最后会装在根文件系统</h3>
         </div>
         
             <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://liujiahao-x.github.io/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">uboot常用命令</a></li>
+            <li><strong>本文标题：</strong><a href="https://liujiahao-x.github.io/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/">内核篇1</a></li>
             <li><strong>本文作者：</strong><a href="https://liujiahao-x.github.io">liujiahao</a></li>
-            <li><strong>本文链接：</strong><a href="https://liujiahao-x.github.io/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">https://liujiahao-x.github.io/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</a></li>
-            <li><strong>发布时间：</strong>2020-05-06</li>
+            <li><strong>本文链接：</strong><a href="https://liujiahao-x.github.io/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/">https://liujiahao-x.github.io/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/</a></li>
+            <li><strong>发布时间：</strong>2020-05-09</li>
             <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
             </li>
             </ul>
         
-        
-        <hr style="height:1px;margin:1rem 0"/>
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/uboot%E5%91%BD%E4%BB%A4/" rel="tag">-uboot命令</a>
-                </div>
-            </div>
-        </div>
         
         
         
@@ -220,17 +198,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">初识linux内核</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020/05/06/%E5%88%9D%E8%AF%86uboot/">
-                <span class="level-item">初识uboot</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/">
+                <span class="level-item">初识linux内核</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -362,57 +333,65 @@
                     目录
                 </h3>
                 <ul class="menu-list"><li>
-        <a class="is-flex" href="#linux命令行界面缓冲机制">
+        <a class="is-flex" href="#关于驱动">
         <span class="has-mr-6">1</span>
-        <span>linux命令行界面缓冲机制</span>
+        <span>关于驱动</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#行缓冲">
+        <a class="is-flex" href="#驱动为内核中硬件设备管理模块">
         <span class="has-mr-6">1.1</span>
-        <span>行缓冲</span>
+        <span>驱动为内核中硬件设备管理模块</span>
         </a></li><li>
-        <a class="is-flex" href="#无缓冲">
+        <a class="is-flex" href="#驱动工作在内核态">
         <span class="has-mr-6">1.2</span>
-        <span>无缓冲</span>
+        <span>驱动工作在内核态</span>
         </a></li><li>
-        <a class="is-flex" href="#全缓冲">
+        <a class="is-flex" href="#驱动程运行时具有很高的权限">
         <span class="has-mr-6">1.3</span>
-        <span>全缓冲</span>
+        <span>驱动程运行时具有很高的权限</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#uboot指令的特点">
+        <a class="is-flex" href="#关于应用程序">
         <span class="has-mr-6">2</span>
-        <span>uboot指令的特点</span>
+        <span>关于应用程序</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#有些命令有简化的别名">
+        <a class="is-flex" href="#应用程序是整个系统的最终目标">
         <span class="has-mr-6">2.1</span>
-        <span>有些命令有简化的别名</span>
+        <span>应用程序是整个系统的最终目标</span>
         </a></li><li>
-        <a class="is-flex" href="#有些命令会带参数">
+        <a class="is-flex" href="#应用程序不属于内核，而是在内核之上">
         <span class="has-mr-6">2.2</span>
-        <span>有些命令会带参数</span>
+        <span>应用程序不属于内核，而是在内核之上</span>
         </a></li><li>
-        <a class="is-flex" href="#命令中的特殊符号">
+        <a class="is-flex" href="#应用程序工作在用户态，是受到限制的。">
         <span class="has-mr-6">2.3</span>
-        <span>命令中的特殊符号</span>
+        <span>应用程序工作在用户态，是受到限制的。</span>
         </a></li><li>
-        <a class="is-flex" href="#有些命令是一个命令族。">
+        <a class="is-flex" href="#应用程序出现问题一般不会导致内核崩溃。">
         <span class="has-mr-6">2.4</span>
-        <span>有些命令是一个命令族。</span>
+        <span>应用程序出现问题一般不会导致内核崩溃。</span>
+        </a></li><li>
+        <a class="is-flex" href="#应用程序通过内核定义的API来调用内核工作。">
+        <span class="has-mr-6">2.5</span>
+        <span>应用程序通过内核定义的API来调用内核工作。</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#uboot常用命令">
+        <a class="is-flex" href="#关于根文件系统">
         <span class="has-mr-6">3</span>
-        <span>uboot常用命令</span>
+        <span>关于根文件系统</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#print-printenv">
+        <a class="is-flex" href="#根文件系统提供根目录">
         <span class="has-mr-6">3.1</span>
-        <span>print/printenv</span>
+        <span>根文件系统提供根目录</span>
         </a></li><li>
-        <a class="is-flex" href="#set-setenv">
+        <a class="is-flex" href="#根文件系统提供根目录-1">
         <span class="has-mr-6">3.2</span>
-        <span>set/setenv</span>
+        <span>根文件系统提供根目录</span>
         </a></li><li>
-        <a class="is-flex" href="#save-save">
+        <a class="is-flex" href="#进程1存放在根文件系统中">
         <span class="has-mr-6">3.3</span>
-        <span>save/save</span>
+        <span>进程1存放在根文件系统中</span>
+        </a></li><li>
+        <a class="is-flex" href="#内核启动最后会装在根文件系统">
+        <span class="has-mr-6">3.4</span>
+        <span>内核启动最后会装在根文件系统</span>
         </a></li></ul></li></ul>
             </div>
         </div>
