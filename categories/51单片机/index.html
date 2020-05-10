@@ -7,19 +7,15 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>关于我 - liujiahao blog</title>
+<title>分类: 51单片机 - liujiahao blog</title>
 
 
-    <meta name="description" content="这是我的个人博客，主要用来记录平时学习中的一些笔记，或是自己做的一些小项目的技术总结。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于我">
-<meta property="og:url" content="https://liujiahao-x.github.io/about/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="liujiahao blog">
+<meta property="og:url" content="https://liujiahao-x.github.io/categories/51%E5%8D%95%E7%89%87%E6%9C%BA/index.html">
 <meta property="og:site_name" content="liujiahao blog">
-<meta property="og:description" content="这是我的个人博客，主要用来记录平时学习中的一些笔记，或是自己做的一些小项目的技术总结。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liujiahao-x.github.io/images/og_image.png">
-<meta property="article:published_time" content="2020-05-02T00:57:54.000Z">
-<meta property="article:modified_time" content="2020-05-02T00:59:09.832Z">
 <meta property="article:author" content="liujiahao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://liujiahao-x.github.io/images/og_image.png">
@@ -98,7 +94,7 @@
                 <a class="navbar-item"
                 href="/tags">标签</a>
                 
-                <a class="navbar-item is-active"
+                <a class="navbar-item"
                 href="/about">关于</a>
                 
             </div>
@@ -119,29 +115,66 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    <div class="card-content">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/categories">分类</a></li>
+            
+            <li class="is-active"><a href="#" aria-current="page">51单片机</a></li>
+        </ul>
+        </nav>
+    </div>
+</div>
+
+    
 <div class="card">
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <i class="fas fa-angle-double-right"></i>关于我
+                <a class="has-link-black-ter" href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/"><i class="fas fa-angle-double-right"></i>记一次51汇编作业</a>
             
         </h1>
         
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-10T09:01:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-10</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-10T10:11:43.296Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-10</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/51%E5%8D%95%E7%89%87%E6%9C%BA/">51单片机</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    1 分钟 读完 (大约 222 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
         <div class="content">
-            <p>  这是我的个人博客，主要用来记录平时学习中的一些笔记，或是自己做的一些小项目的技术总结。</p>
+            <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>&emsp;&emsp;试设计一个n字节的无符号十进制数加法子程序， 其功能为将 R0和R1指出的内部RAM中两个n字节压缩BCD码无符号十进制整数相加，结果存放于被加数单元中。Ｒ0、 Ｒ1分别指向被加数和加数的低位字节， 字节数ｎ存于R2。运算结果：Ｒ0指向和的低位字节，CY为进位位。  </p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>子程序流程分析如下：  </p>
+<img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/51%E4%BD%9C%E4%B8%9A%E6%B5%81%E7%A8%8B%E5%9B%BE.png?raw=true" width = "400" height = "500" alt="" align=center/>  
+
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">      ORG <span class="number">0000H</span></span><br><span class="line">      SJMP MAIN</span><br><span class="line">      ORG  <span class="number">0030H</span>		//初始化</span><br><span class="line"><span class="symbol">MAIN:</span>	<span class="keyword">MOV</span> <span class="number">40H</span>,#<span class="number">72H</span></span><br><span class="line">      <span class="keyword">MOV</span> <span class="number">41H</span>,#<span class="number">33H</span></span><br><span class="line">      <span class="keyword">MOV</span> <span class="number">60H</span>,#<span class="number">33H</span></span><br><span class="line">      <span class="keyword">MOV</span> <span class="number">61H</span>,#<span class="number">44H</span>	//赋值</span><br><span class="line">      LCALL SUN</span><br><span class="line">      SJMP WAIT  </span><br><span class="line"></span><br><span class="line"><span class="symbol">SUN:</span>  <span class="keyword">MOV</span> <span class="built_in">R0</span>,#<span class="number">40H</span>	  //求和子程序</span><br><span class="line">      <span class="keyword">MOV</span> <span class="built_in">R1</span>,#<span class="number">60H</span></span><br><span class="line">      <span class="keyword">MOV</span> <span class="built_in">R2</span>,#<span class="number">2</span></span><br><span class="line">      <span class="keyword">MOV</span> A,<span class="built_in">R2</span></span><br><span class="line"><span class="symbol">LOOP:</span> <span class="keyword">JNZ</span> FSUN</span><br><span class="line">      SJMP  ENDD</span><br><span class="line"><span class="symbol">FSUN:</span> <span class="keyword">MOV</span> A,@<span class="built_in">R0</span></span><br><span class="line">      ADDC A,@<span class="built_in">R1</span></span><br><span class="line">      DA A</span><br><span class="line">      <span class="keyword">MOV</span> @<span class="built_in">R0</span>,A</span><br><span class="line">      <span class="keyword">INC</span> <span class="built_in">R0</span></span><br><span class="line">      <span class="keyword">INC</span> <span class="built_in">R1</span></span><br><span class="line">      <span class="keyword">DEC</span> <span class="built_in">R2</span></span><br><span class="line">      <span class="keyword">MOV</span> A,<span class="built_in">R2</span></span><br><span class="line">      SJMP <span class="keyword">LOOP</span>  </span><br><span class="line"><span class="symbol">ENDD:</span> <span class="keyword">RET</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">WAIT:</span> SJMP WAIT</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试结果如下"><a href="#测试结果如下" class="headerlink" title="测试结果如下"></a>测试结果如下</h2><img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/51%E4%BD%9C%E4%B8%9A%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C.png?raw=true" width = "800" height = "400" alt="" align=center/>  
 
         </div>
         
         
         
         
-        
-<div class="sharethis-inline-share-buttons"></div>
-<script type='text/javascript' src='https://github.com/liujiahao-x' async='async'></script>
-
-        
     </div>
 </div>
 
@@ -151,26 +184,7 @@
 
 
 
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="valine-thread" class="content"></div>
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-<script>
-    new Valine({
-        el: '#valine-thread' ,
-        notify: false,
-        verify: false,
-        app_id: 'JkQvWahVF7BeoAnHIc8MG79d-gzGzoHsz',
-        app_key: 'Rqyu6hyHfbdfbTJvKeuAq0pj',
-        placeholder: 'Say something...'
-    });
-</script>
 
-    </div>
-</div>
 
 </div>
                 
