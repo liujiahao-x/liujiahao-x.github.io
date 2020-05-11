@@ -133,6 +133,88 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
+                <a class="has-link-black-ter" href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/"><i class="fas fa-angle-double-right"></i>windows下fastboot刷机</a>
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-11T11:08:23.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-11</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T14:38:11.046Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/linux/%E5%88%B7%E6%9C%BA/">刷机</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    5 分钟 读完 (大约 814 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <p><em>本文旨在介绍如何在windows环境下通过fastboot实现简单的刷机。</em></p>
+<h2 id="何为fastboot"><a href="#何为fastboot" class="headerlink" title="何为fastboot"></a>何为fastboot</h2><p>&emsp;&emsp;fastboot是windows下的一款软件，亦是uboot中的一句命令。<br>fastboot指令在uboot中介绍如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x210 # help fastboot</span><br><span class="line">fastboot [inactive timeout]</span><br><span class="line">    - Run as a fastboot usb device.</span><br><span class="line">    - The optional inactive timeout is the decimal seconds before</span><br><span class="line">    - the normal console resumes</span><br></pre></td></tr></table></figure>
+<h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>&emsp;&emsp;1.环境：win10<br>&emsp;&emsp;2.刷机对象：S5PV210(ARM Cortex -A8)<br>&emsp;&emsp;3.linux+QT4.8</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="硬件准备"><a href="#硬件准备" class="headerlink" title="硬件准备"></a>硬件准备</h3><p>&emsp;&emsp;1.连接usb线（fastboot数据传输）<br>&emsp;&emsp;2.连接usb转串口线（串口监视下载过程）</p>
+<h3 id="软件准备"><a href="#软件准备" class="headerlink" title="软件准备"></a>软件准备</h3><p>&emsp;&emsp;1.在电脑中安装fastboot驱动<br>&emsp;&emsp;2.将预安装系统的bootloader，系统镜像，rootfs放在fastboot安装目录下（最好是将每个操作系统的预安装文件放在fastboot目录下的一个单独的目录下）。</p>
+<h3 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h3><p>1.在uboot中运行<code>fastboot</code>，现象如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">x210 # fastboot</span><br><span class="line">[Partition table on MoviNAND]</span><br><span class="line">ptn 0 name&#x3D;&#39;bootloader&#39; start&#x3D;0x0 len&#x3D;N&#x2F;A (use hard-coded info. (cmd: movi))</span><br><span class="line">ptn 1 name&#x3D;&#39;kernel&#39; start&#x3D;N&#x2F;A len&#x3D;N&#x2F;A (use hard-coded info. (cmd: movi))</span><br><span class="line">ptn 2 name&#x3D;&#39;ramdisk&#39; start&#x3D;N&#x2F;A len&#x3D;0x300000(~3072KB) (use hard-coded info. (cmd: movi))</span><br><span class="line">ptn 3 name&#x3D;&#39;config&#39; start&#x3D;0xB11E00 len&#x3D;0x1024BC00(~264495KB)</span><br><span class="line">ptn 4 name&#x3D;&#39;system&#39; start&#x3D;0x10D5DA00 len&#x3D;0x1024BC00(~264495KB)</span><br><span class="line">ptn 5 name&#x3D;&#39;cache&#39; start&#x3D;0x20FA9600 len&#x3D;0x6751800(~105798KB)</span><br><span class="line">ptn 6 name&#x3D;&#39;userdata&#39; start&#x3D;0x276FAE00 len&#x3D;0xC3CC2A00(~3207946KB)</span><br></pre></td></tr></table></figure>
+<p>连接成功的标志是win10在cmd中切到fastboot安装目录下可见输入 <code>fastboot devices</code> 可见设备.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D:\fastboot install\fastboot&gt;fastboot devices</span><br><span class="line">SMDKC110-01     fastboot</span><br></pre></td></tr></table></figure>
+<p>到现在为止，说明嵌入式开发板已经和pc机连接起来了，可以开始进行数据传输了。<br>2.烧录uboot<br>cmd切入到fastboot目录下输入<code>fastboot flash bootloader linux+QT4.8\uboot.bin</code>。cmd中显示如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">D:\fastboot install\fastboot&gt;fastboot flash bootloader linux+QT4.8\uboot.bin</span><br><span class="line">sending &#39;bootloader&#39; (384 KB)... OKAY</span><br><span class="line">writing &#39;bootloader&#39;... OKAY</span><br></pre></td></tr></table></figure>
+<p>串口监视器中（嵌入式设备）显示如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Received 17 bytes: download:00060000</span><br><span class="line">Starting download of 393216 bytes</span><br><span class="line"></span><br><span class="line">downloading of 393216 bytes finished</span><br><span class="line">Received 16 bytes: flash:bootloader</span><br><span class="line">flashing &#39;bootloader&#39;</span><br><span class="line">Writing BL1 to sector 1 (16 sectors).. checksum : 0xed75e</span><br><span class="line">writing bootloader.. 49, 1024</span><br><span class="line">MMC write: dev</span><br></pre></td></tr></table></figure>
+<p>说明uboot.bin烧录成功。<br>注意：这里是在往bootloader分区烧录uboot，我的uboot.bin是放在fastboot目录下的linux+QT4.8文件夹中，故而输入如上，这里输入的是相对地址。  </p>
+<p>3.重启嵌入式设备，进入新下载的uboot中输入’fdisk -c 0’,意为格式化inand，结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">x210 # fdisk -c 0</span><br><span class="line">fdisk is completed</span><br><span class="line"></span><br><span class="line">partion #    size(MB)     block start #    block count    partition_Id</span><br><span class="line">   1           258            22671          528990          0x83</span><br><span class="line">   2           258           551661          528990          0x83</span><br><span class="line">   3           103          1080651          211596          0x83</span><br><span class="line">   4          3132          1292247         6415893          0x83</span><br><span class="line">&#96;&#96;&#96;  </span><br><span class="line"></span><br><span class="line">4.重新进入fastboot模式。开始烧录kernel。</span><br><span class="line">cmd中如下：</span><br></pre></td></tr></table></figure>
+<p>D:\fastboot install\fastboot&gt;fastboot flash kernel linux+QT4.8\zImage-qt<br>sending ‘kernel’ (3566 KB)… OKAY<br>writing ‘kernel’… OKAY</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">串口监视器结果如下：</span><br></pre></td></tr></table></figure>
+<p>downloading of 3651584 bytes finished<br>Received 12 bytes: flash:kernel<br>flashing ‘kernel’<br>writing kernel.. 1073, 8192<br>MMC write: dev # 0, block # 1073, count 8192 … 8192 blocks written: OK<br>completed<br>partition ‘kernel’ flashed</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kernel烧录完成。  </span><br><span class="line"></span><br><span class="line">5.开始烧录rootfs</span><br><span class="line">烧录时间较慢。cmd中：</span><br></pre></td></tr></table></figure>
+<p>D:\fastboot install\fastboot&gt;fastboot flash system linux+QT4.8\rootfs_qt4.ext3<br>sending ‘system’ (262144 KB)… OKAY<br>writing ‘system’… OKAY</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">串口监视器中：</span><br></pre></td></tr></table></figure>
+<p>Received 17 bytes: download:10000000<br>Starting download of 268435456 bytes<br>……………………………………………………………………..<br>……………………………………………………………………..<br>……………………………………………………………………..<br>……………<br>downloading of 268435456 bytes finished<br>Received 12 bytes: flash:system<br>flashing ‘system’</p>
+<p>MMC write: dev # 0, block # 551661, count 528990 … 528990 blocks written: OK<br>partition ‘system’ flashed</p>
+<pre><code>rootfs下载结束。  
+ok，大功告成。赶紧reset感受一下吧。  
+
+
+
+*本文大概介绍了一下使用fastboot工具来刷机时的大概步骤，有错误缺漏之处欢迎大家补充。*</code></pre>
+        </div>
+        
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
                 <a class="has-link-black-ter" href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/"><i class="fas fa-angle-double-right"></i>内核篇2</a>
             
         </h1>
@@ -141,7 +223,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-09T03:29:50.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-09</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:44:43.531Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T06:56:57.993Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
                 
                 
                 <div class="level-item">
@@ -465,7 +547,7 @@
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        7
+                        8
                     </p>
                 </a>
             </div>
@@ -475,7 +557,7 @@
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        7
+                        8
                     </p>
                 </a>
             </div>
@@ -485,7 +567,7 @@
                         标签
                     </p>
                     <p class="title has-text-weight-normal">
-                        5
+                        6
                     </p>
                 </a>
             </div>
@@ -523,7 +605,7 @@
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/I2C/" style="font-size: 10px;">I2C</a> <a href="/tags/linux-kernel/" style="font-size: 10px;">linux kernel</a> <a href="/tags/uboot/" style="font-size: 10px;">uboot</a> <a href="/tags/uboot%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">uboot命令</a> <a href="/tags/%E5%86%85%E6%A0%B8%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">内核的模块化</a>
+        <a href="/tags/I2C/" style="font-size: 10px;">I2C</a> <a href="/tags/fastboot/" style="font-size: 10px;">fastboot</a> <a href="/tags/linux-kernel/" style="font-size: 10px;">linux kernel</a> <a href="/tags/uboot/" style="font-size: 10px;">uboot</a> <a href="/tags/uboot%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">uboot命令</a> <a href="/tags/%E5%86%85%E6%A0%B8%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">内核的模块化</a>
     </div>
 </div>
 
@@ -543,7 +625,7 @@
                     <span class="level-item">五月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">7</span>
+                    <span class="level-item tag">8</span>
                 </span>
             </a>
         </li>
@@ -562,6 +644,25 @@
         <h3 class="menu-label">
             最新文章
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="windows下fastboot刷机">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-11T11:08:23.000Z">2020-05-11</time></div>
+                    <a href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/" class="title has-link-black-ter is-size-6 has-text-weight-normal">windows下fastboot刷机</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%88%B7%E6%9C%BA/">刷机</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -639,25 +740,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="uboot常用命令">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-06T13:39:26.000Z">2020-05-06</time></div>
-                    <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">uboot常用命令</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/uboot/">uboot</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
         
@@ -675,7 +757,7 @@
                 <span class="level-item">linux</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">5</span>
+                <span class="level-item tag">6</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/categories/linux/uboot/">
@@ -692,6 +774,14 @@
             </span>
             <span class="level-end">
                 <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/linux/%E5%88%B7%E6%9C%BA/">
+            <span class="level-start">
+                <span class="level-item">刷机</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
             </span>
         </a></li></ul></li><li>
         <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
@@ -750,6 +840,25 @@
         
         <article class="media">
             
+            <a href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="windows下fastboot刷机">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-11T11:08:23.000Z">2020-05-11</time></div>
+                    <a href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/" class="title has-link-black-ter is-size-6 has-text-weight-normal">windows下fastboot刷机</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%88%B7%E6%9C%BA/">刷机</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="记一次51汇编作业">
@@ -824,25 +933,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="uboot常用命令">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-06T13:39:26.000Z">2020-05-06</time></div>
-                    <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">uboot常用命令</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/uboot/">uboot</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
     
@@ -860,7 +950,7 @@
                 <span class="level-item">linux</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">5</span>
+                <span class="level-item tag">6</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/categories/linux/uboot/">
@@ -877,6 +967,14 @@
             </span>
             <span class="level-end">
                 <span class="level-item tag">3</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/linux/%E5%88%B7%E6%9C%BA/">
+            <span class="level-start">
+                <span class="level-item">刷机</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
             </span>
         </a></li></ul></li><li>
         <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
