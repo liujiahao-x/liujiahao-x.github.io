@@ -7,12 +7,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>标签: linux kernel - liujiahao blog</title>
+<title>分类: 内核 - liujiahao blog</title>
 
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="liujiahao blog">
-<meta property="og:url" content="https://liujiahao-x.github.io/tags/linux-kernel/index.html">
+<meta property="og:url" content="https://liujiahao-x.github.io/categories/linux/%E5%86%85%E6%A0%B8/index.html">
 <meta property="og:site_name" content="liujiahao blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liujiahao-x.github.io/images/og_image.png">
@@ -119,12 +119,124 @@
     <div class="card-content">
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-            <li><a href="/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">linux kernel</a></li>
+            <li><a href="/categories">分类</a></li>
+            
+            <li><a href="/categories/linux/">linux</a></li>
+            
+            <li class="is-active"><a href="#" aria-current="page">内核</a></li>
         </ul>
         </nav>
     </div>
 </div>
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/"><i class="fas fa-angle-double-right"></i>内核篇2</a>
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-09T03:29:50.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-09</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:44:43.531Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    几秒 读完 (大约 0 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            
+        </div>
+        
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/"><i class="fas fa-angle-double-right"></i>内核篇1</a>
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-09T00:37:38.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-09</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:44:07.493Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    3 分钟 读完 (大约 523 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2 id="关于驱动"><a href="#关于驱动" class="headerlink" title="关于驱动"></a>关于驱动</h2><h3 id="驱动为内核中硬件设备管理模块"><a href="#驱动为内核中硬件设备管理模块" class="headerlink" title="驱动为内核中硬件设备管理模块"></a>驱动为内核中硬件设备管理模块</h3><p>&emsp;&emsp;硬件设备的运行需要驱动代码，裸机开发中驱动代码需要专门写出来。但是在操作系统中，驱动代码嵌入到了内核里。由于每一种硬件设备需要一种驱动，所以说，内核的版本总是在更新之中。</p>
+<h3 id="驱动工作在内核态"><a href="#驱动工作在内核态" class="headerlink" title="驱动工作在内核态"></a>驱动工作在内核态</h3><p>&emsp;&emsp;对于单核的cpu来讲，微观上cpu在某一刻只能运行一条指令。如果运行的代码属于内核，则为内核态；运行的代码属于应用程序，则为用户态。</p>
+<h3 id="驱动程运行时具有很高的权限"><a href="#驱动程运行时具有很高的权限" class="headerlink" title="驱动程运行时具有很高的权限"></a>驱动程运行时具有很高的权限</h3><p>&emsp;&emsp;由于驱动是运行在内核态的，所以她在运行时，具有最高的权限，也就是说可以任意访问读写内存的任何部分。所以说，驱动开发也伴随着很高的风险，一个不慎，就可能导致内核崩溃，出现安全漏洞。</p>
+<h2 id="关于应用程序"><a href="#关于应用程序" class="headerlink" title="关于应用程序"></a>关于应用程序</h2><h3 id="应用程序是整个系统的最终目标"><a href="#应用程序是整个系统的最终目标" class="headerlink" title="应用程序是整个系统的最终目标"></a>应用程序是整个系统的最终目标</h3><p>&emsp;&emsp;无论是硬件还是内核，最终的目的就是为用户提供使用功能，而这些功能都是由应用程序来提供的。所以说，应用程序是整个操作系统的最终目标。</p>
+<h3 id="应用程序不属于内核，而是在内核之上"><a href="#应用程序不属于内核，而是在内核之上" class="headerlink" title="应用程序不属于内核，而是在内核之上"></a>应用程序不属于内核，而是在内核之上</h3><h3 id="应用程序工作在用户态，是受到限制的。"><a href="#应用程序工作在用户态，是受到限制的。" class="headerlink" title="应用程序工作在用户态，是受到限制的。"></a>应用程序工作在用户态，是受到限制的。</h3><h3 id="应用程序出现问题一般不会导致内核崩溃。"><a href="#应用程序出现问题一般不会导致内核崩溃。" class="headerlink" title="应用程序出现问题一般不会导致内核崩溃。"></a>应用程序出现问题一般不会导致内核崩溃。</h3><h3 id="应用程序通过内核定义的API来调用内核工作。"><a href="#应用程序通过内核定义的API来调用内核工作。" class="headerlink" title="应用程序通过内核定义的API来调用内核工作。"></a>应用程序通过内核定义的API来调用内核工作。</h3><h2 id="关于根文件系统"><a href="#关于根文件系统" class="headerlink" title="关于根文件系统"></a>关于根文件系统</h2><p>&emsp;&emsp; 根文件系统为操作系统启动提供了很多东西：根目录，进程1。</p>
+<h3 id="根文件系统提供根目录"><a href="#根文件系统提供根目录" class="headerlink" title="根文件系统提供根目录"></a>根文件系统提供根目录</h3><h3 id="根文件系统提供根目录-1"><a href="#根文件系统提供根目录-1" class="headerlink" title="根文件系统提供根目录"></a>根文件系统提供根目录</h3><h3 id="进程1存放在根文件系统中"><a href="#进程1存放在根文件系统中" class="headerlink" title="进程1存放在根文件系统中"></a>进程1存放在根文件系统中</h3><h3 id="内核启动最后会装在根文件系统"><a href="#内核启动最后会装在根文件系统" class="headerlink" title="内核启动最后会装在根文件系统"></a>内核启动最后会装在根文件系统</h3>
+        </div>
+        
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
 
     
 <div class="card">

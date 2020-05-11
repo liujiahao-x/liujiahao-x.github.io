@@ -7,12 +7,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>分类: 51单片机 - liujiahao blog</title>
+<title>分类: I2C - liujiahao blog</title>
 
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="liujiahao blog">
-<meta property="og:url" content="https://liujiahao-x.github.io/categories/51%E5%8D%95%E7%89%87%E6%9C%BA/index.html">
+<meta property="og:url" content="https://liujiahao-x.github.io/categories/%E9%80%9A%E4%BF%A1/I2C/index.html">
 <meta property="og:site_name" content="liujiahao blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liujiahao-x.github.io/images/og_image.png">
@@ -121,7 +121,9 @@
         <ul>
             <li><a href="/categories">分类</a></li>
             
-            <li class="is-active"><a href="#" aria-current="page">51单片机</a></li>
+            <li><a href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li>
+            
+            <li class="is-active"><a href="#" aria-current="page">I2C</a></li>
         </ul>
         </nav>
     </div>
@@ -133,20 +135,20 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/"><i class="fas fa-angle-double-right"></i>记一次51汇编作业</a>
+                <a class="has-link-black-ter" href="/2020/05/02/%E6%B5%85%E8%B0%88I2C/"><i class="fas fa-angle-double-right"></i>浅谈I2C</a>
             
         </h1>
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-05-10T09:01:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-10</time>
+                <time class="level-item has-text-grey" datetime="2020-05-02T01:32:12.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-02</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-10T10:11:43.296Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-10</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:45:25.065Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
                 
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/51%E5%8D%95%E7%89%87%E6%9C%BA/">51单片机</a>
+                <a class="has-link-grey -link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E9%80%9A%E4%BF%A1/I2C/">I2C</a>
                 </div>
                 
                 
@@ -154,7 +156,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    1 分钟 读完 (大约 222 个字)
+                    8 分钟 读完 (大约 1221 个字)
                 </span>
                 
                 
@@ -162,13 +164,16 @@
         </div>
         
         <div class="content">
-            <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>&emsp;&emsp;试设计一个n字节的无符号十进制数加法子程序， 其功能为将 R0和R1指出的内部RAM中两个n字节压缩BCD码无符号十进制整数相加，结果存放于被加数单元中。Ｒ0、 Ｒ1分别指向被加数和加数的低位字节， 字节数ｎ存于R2。运算结果：Ｒ0指向和的低位字节，CY为进位位。  </p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>子程序流程分析如下：  </p>
-<img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/51%E4%BD%9C%E4%B8%9A%E6%B5%81%E7%A8%8B%E5%9B%BE.png?raw=true" width = "400" height = "500" alt="" align=center/>  
+            <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>&emsp;&emsp;<em>I2C是一种工作在低速，短距离情况下用来传输数据的通信接口。她总共就只有两根线，一根为SCK(serial clock串行时钟线)，一根为SDA(serial data串行数据线)。由此不难看出，她是一种串行的，同步的通信方式。至于信号传输的方向，这里着重说一下。对于通信双方，有主（master）从（slave）之分，在一个确定的通信环境下面，一个master可以对应多个slave（在通信环境确定的情况下，master和slave的角色一般是确定的，不太容易更改），从而实现分时分对象的控制。那么问题来了，那么多的slave，master是如何辨别哪个是哪个呢，I2C的解决方案是通过地址来区分，一般情况下，每个slave都有一个7bit的地址，其中高四位是器件类型，由生产方来决定，低四位有硬件逻辑来编程（也就是说当硬件电路确定了之后，那么slave的地址也就确定了）。然后，通信双方就可以按照规定好的协议开始愉快的交流了。</em></p>
+<h1 id="I2C通信协议"><a href="#I2C通信协议" class="headerlink" title="I2C通信协议"></a>I2C通信协议</h1><p>&emsp;&emsp; <em>话不多说，直接上图</em>      </p>
+<img src="https://github.com/liujiahao-x/pictures/blob/master/other%20pictures/picture%20of%20%20I2C.png?raw=true" width = "600" height = "300" alt="" align=center/>    
 
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">      ORG <span class="number">0000H</span></span><br><span class="line">      SJMP MAIN</span><br><span class="line">      ORG  <span class="number">0030H</span>		//初始化</span><br><span class="line"><span class="symbol">MAIN:</span>	<span class="keyword">MOV</span> <span class="number">40H</span>,#<span class="number">72H</span></span><br><span class="line">      <span class="keyword">MOV</span> <span class="number">41H</span>,#<span class="number">33H</span></span><br><span class="line">      <span class="keyword">MOV</span> <span class="number">60H</span>,#<span class="number">33H</span></span><br><span class="line">      <span class="keyword">MOV</span> <span class="number">61H</span>,#<span class="number">44H</span>	//赋值</span><br><span class="line">      LCALL SUN</span><br><span class="line">      SJMP WAIT  </span><br><span class="line"></span><br><span class="line"><span class="symbol">SUN:</span>  <span class="keyword">MOV</span> <span class="built_in">R0</span>,#<span class="number">40H</span>	  //求和子程序</span><br><span class="line">      <span class="keyword">MOV</span> <span class="built_in">R1</span>,#<span class="number">60H</span></span><br><span class="line">      <span class="keyword">MOV</span> <span class="built_in">R2</span>,#<span class="number">2</span></span><br><span class="line">      <span class="keyword">MOV</span> A,<span class="built_in">R2</span></span><br><span class="line"><span class="symbol">LOOP:</span> <span class="keyword">JNZ</span> FSUN</span><br><span class="line">      SJMP  ENDD</span><br><span class="line"><span class="symbol">FSUN:</span> <span class="keyword">MOV</span> A,@<span class="built_in">R0</span></span><br><span class="line">      ADDC A,@<span class="built_in">R1</span></span><br><span class="line">      DA A</span><br><span class="line">      <span class="keyword">MOV</span> @<span class="built_in">R0</span>,A</span><br><span class="line">      <span class="keyword">INC</span> <span class="built_in">R0</span></span><br><span class="line">      <span class="keyword">INC</span> <span class="built_in">R1</span></span><br><span class="line">      <span class="keyword">DEC</span> <span class="built_in">R2</span></span><br><span class="line">      <span class="keyword">MOV</span> A,<span class="built_in">R2</span></span><br><span class="line">      SJMP <span class="keyword">LOOP</span>  </span><br><span class="line"><span class="symbol">ENDD:</span> <span class="keyword">RET</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">WAIT:</span> SJMP WAIT</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp; 当master想要给slave发送信息时（write mode），通信开始后，先给SDA发送1byte的数据，这一段数据为：高7位slave的地址+0。然后等待对应的slave发送一个应答信号（ACK），当master收到ACK后，就给slave发送1byte的数据，然后slave收到信息了，就再给master发送一个ACK，至此，一个通信周期结束。<br>&emsp;&emsp; 当slave要给master发送数据时（read mode），通信开始后，master先给SDA发送1byte的数据，数据为：高7位的slave地址+1（用1和0来区别到底是都还是写）。然后slave先ACK，然后紧接着就发送过来1byte的数据，发送完之后，等待master的ACK，之后一个通信周期结束。<br>&emsp;&emsp; <em>各位看官看到这里，是不是对I2C通信协议有了大概的了解呢，但是心里肯定还是有不少疑惑，比如说，数据全部都是通过电平信号来传输的，那么我怎么知道什么情况下通信开始？什么情况下通信结束？是么样的信号算是应答信号？各种信号在时间上又如何调节呢？莫急，我们再上图</em></p>
+<img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/I2C%E6%97%B6%E5%BA%8F%E5%9B%BE.JPG?raw=true" width = "600" height = "300" alt="" align=center/>      
 
-<h2 id="测试结果如下"><a href="#测试结果如下" class="headerlink" title="测试结果如下"></a>测试结果如下</h2><img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/51%E4%BD%9C%E4%B8%9A%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C.png?raw=true" width = "800" height = "400" alt="" align=center/>  
+<p>&emsp;&emsp; <em>这前面这两张图片时三星某soc的datasheet上抠下来的，这里做个说明</em>    </p>
+<p>&emsp;&emsp; 言归正传，大家看到这张图片是不是有点恍恍然的感觉呢，没错，这张时序图可以将我们之前的疑惑一一解除。首先，我们是否还记得最前面说过得I2C是一个同步通信得方式，那么，如何把握节奏就不言而喻了，就是通过时钟信号来调控。当某一个时刻，SCK为高电平时，SDA上出现了一个下降沿，那么意味着，通信开始，要开始搞事情了。然后master二话不说，先丢1byte得数据过去，告诉众slave，该谁了，该干啥了。然后slave如果没挂（通信时有时候从机会莫名奇妙得由于各种奇葩得原因挂掉）的话，就会站出来说一声，在呢（也就是发送一个ACK给master）。那么具体如何实现ACK呢？I2C总线上的数据时1byte1byte传输的，每传输1byte的数据需要8个时钟周期，当1byte数据传输完毕之后，总线会被控制为高电平(总线释放)，当第九个脉冲之前，应答方将之拉低成了低电平，而且在第九个时钟高电平的时候保持低电平则称之为ACK；要是没有反应，继续保持为高电平，则称之为NACK。然后就是数据传输，又是一个字节，然后ACK，之后完事收工，总线在SCL期间恢复到高电平，即完成一个上升沿，一切的一切恢复如初，好像什么都没有发生过。</p>
+<p>&emsp;&emsp; <em>至此，对I2C算是有了一个粗浅的了解。如文章中有不足之处，还望指正。</em></p>
 
         </div>
         
@@ -240,7 +245,7 @@
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        4
+                        7
                     </p>
                 </a>
             </div>
@@ -288,7 +293,7 @@
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/tags/I2C/" style="font-size: 10px;">-I2C</a> <a href="/tags/linux-kernel/" style="font-size: 10px;">-linux kernel</a> <a href="/tags/uboot/" style="font-size: 10px;">-uboot</a> <a href="/tags/uboot%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">-uboot命令</a> <a href="/tags/%E5%86%85%E6%A0%B8%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">-内核的模块化</a>
+        <a href="/tags/I2C/" style="font-size: 10px;">I2C</a> <a href="/tags/linux-kernel/" style="font-size: 10px;">linux kernel</a> <a href="/tags/uboot/" style="font-size: 10px;">uboot</a> <a href="/tags/uboot%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">uboot命令</a> <a href="/tags/%E5%86%85%E6%A0%B8%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">内核的模块化</a>
     </div>
 </div>
 
@@ -341,7 +346,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-10T09:01:26.000Z">2020-05-10</time></div>
                     <a href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/" class="title has-link-black-ter is-size-6 has-text-weight-normal">记一次51汇编作业</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/51%E5%8D%95%E7%89%87%E6%9C%BA/">51单片机</a>
+                        <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a> / <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/51/">51</a>
                     </p>
                 </div>
             </div>
@@ -360,7 +365,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T03:29:50.000Z">2020-05-09</time></div>
                     <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/" class="title has-link-black-ter is-size-6 has-text-weight-normal">内核篇2</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
                     </p>
                 </div>
             </div>
@@ -379,7 +384,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T00:37:38.000Z">2020-05-09</time></div>
                     <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/" class="title has-link-black-ter is-size-6 has-text-weight-normal">内核篇1</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
                     </p>
                 </div>
             </div>
@@ -398,7 +403,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-07T14:25:11.000Z">2020-05-07</time></div>
                     <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初识linux内核</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/linux%E5%86%85%E6%A0%B8/">linux内核</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
                     </p>
                 </div>
             </div>
@@ -417,7 +422,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-06T13:39:26.000Z">2020-05-06</time></div>
                     <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">uboot常用命令</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/uboot/">uboot</a>
                     </p>
                 </div>
             </div>
@@ -435,14 +440,6 @@
             </h3>
             <ul class="menu-list">
             <li>
-        <a class="level is-marginless" href="/categories/51%E5%8D%95%E7%89%87%E6%9C%BA/">
-            <span class="level-start">
-                <span class="level-item">51单片机</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
         <a class="level is-marginless" href="/categories/linux/">
             <span class="level-start">
                 <span class="level-item">linux</span>
@@ -451,9 +448,33 @@
                 <span class="level-item tag">5</span>
             </span>
         </a><ul><li>
-        <a class="level is-marginless" href="/categories/linux/linux%E5%86%85%E6%A0%B8/">
+        <a class="level is-marginless" href="/categories/linux/uboot/">
             <span class="level-start">
-                <span class="level-item">linux内核</span>
+                <span class="level-item">uboot</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/linux/%E5%86%85%E6%A0%B8/">
+            <span class="level-start">
+                <span class="level-item">内核</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+            <span class="level-start">
+                <span class="level-item">嵌入式</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/51/">
+            <span class="level-start">
+                <span class="level-item">51</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -466,7 +487,15 @@
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
-        </a></li>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E9%80%9A%E4%BF%A1/I2C/">
+            <span class="level-start">
+                <span class="level-item">I2C</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
             </ul>
         </div>
     </div>
@@ -502,7 +531,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-10T09:01:26.000Z">2020-05-10</time></div>
                     <a href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/" class="title has-link-black-ter is-size-6 has-text-weight-normal">记一次51汇编作业</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/51%E5%8D%95%E7%89%87%E6%9C%BA/">51单片机</a>
+                        <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a> / <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/51/">51</a>
                     </p>
                 </div>
             </div>
@@ -521,7 +550,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T03:29:50.000Z">2020-05-09</time></div>
                     <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/" class="title has-link-black-ter is-size-6 has-text-weight-normal">内核篇2</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
                     </p>
                 </div>
             </div>
@@ -540,7 +569,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T00:37:38.000Z">2020-05-09</time></div>
                     <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/" class="title has-link-black-ter is-size-6 has-text-weight-normal">内核篇1</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
                     </p>
                 </div>
             </div>
@@ -559,7 +588,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-07T14:25:11.000Z">2020-05-07</time></div>
                     <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初识linux内核</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/linux%E5%86%85%E6%A0%B8/">linux内核</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
                     </p>
                 </div>
             </div>
@@ -578,7 +607,7 @@
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-06T13:39:26.000Z">2020-05-06</time></div>
                     <a href="/2020/05/06/uboot%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">uboot常用命令</a>
                     <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/uboot/">uboot</a>
                     </p>
                 </div>
             </div>
@@ -596,14 +625,6 @@
             </h3>
             <ul class="menu-list">
             <li>
-        <a class="level is-marginless" href="/categories/51%E5%8D%95%E7%89%87%E6%9C%BA/">
-            <span class="level-start">
-                <span class="level-item">51单片机</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">1</span>
-            </span>
-        </a></li><li>
         <a class="level is-marginless" href="/categories/linux/">
             <span class="level-start">
                 <span class="level-item">linux</span>
@@ -612,9 +633,33 @@
                 <span class="level-item tag">5</span>
             </span>
         </a><ul><li>
-        <a class="level is-marginless" href="/categories/linux/linux%E5%86%85%E6%A0%B8/">
+        <a class="level is-marginless" href="/categories/linux/uboot/">
             <span class="level-start">
-                <span class="level-item">linux内核</span>
+                <span class="level-item">uboot</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/linux/%E5%86%85%E6%A0%B8/">
+            <span class="level-start">
+                <span class="level-item">内核</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+            <span class="level-start">
+                <span class="level-item">嵌入式</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/51/">
+            <span class="level-start">
+                <span class="level-item">51</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -627,7 +672,15 @@
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
-        </a></li>
+        </a><ul><li>
+        <a class="level is-marginless" href="/categories/%E9%80%9A%E4%BF%A1/I2C/">
+            <span class="level-start">
+                <span class="level-item">I2C</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li>
             </ul>
         </div>
     </div>
