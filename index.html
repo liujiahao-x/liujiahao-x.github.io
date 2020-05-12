@@ -471,7 +471,7 @@ partition &#39;system&#39; flashed
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-06T13:39:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-06</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:46:09.184Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-12T10:39:18.015Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-12</time>
                 
                 
                 <div class="level-item">
@@ -484,7 +484,7 @@ partition &#39;system&#39; flashed
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    4 分钟 读完 (大约 652 个字)
+                    6 分钟 读完 (大约 868 个字)
                 </span>
                 
                 
@@ -508,6 +508,9 @@ partition &#39;system&#39; flashed
 <p>由上可以看出set/setenv有两种使用方式：<br>&lt;1&gt;<code>set name value</code>      //给名为name的环境变量赋值为value<br>&lt;2&gt;<code>set name</code>             //删除环境变量name</p>
 <h3 id="save-save"><a href="#save-save" class="headerlink" title="save/save"></a>save/save</h3><p><code>save</code>        //将改变的环境变量值存储到flash中</p>
 <p>题外话：每次系统上电之后，uboot都会将环境变量从flash中加载一份到ddr（内存）中，每次set的时候，都是对ddr中的环境变量进行改变，直到save指令后，ddr中的环境变量才会覆盖原来flash中的环境变量。</p>
+<h3 id="tftp"><a href="#tftp" class="headerlink" title="tftp"></a>tftp</h3><p>题外话：配置完tftp可以通过网络从linux或者时windows下载镜像到DDR。uboot扮演客户端的角色，在win或是ubuntu中有tftp服务器，将要下载的东西放入服务器的下载目录中，就可以通过uboot中的命令实现下载。windows搭建tftp服务器：通过软件：tftpd32等等，使用简单。linux下搭建tftp服务器：网络上有很多经验，这里不做赘述。<br>uboot中的tftp指令解释为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x210 # help tftp                </span><br><span class="line">tftpboot [loadAddress] [[hostIPaddr:]bootfilename]</span><br></pre></td></tr></table></figure>
+<p>通过该命令可以将tftp配置的文件夹中的指定文件通过网络下载到指定位置。在使用该指令之前一定要在uboot中提前配置服务器的ip=serverip。<br>注：uboot也支持nfs下载。</p>
 
         </div>
         
