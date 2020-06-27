@@ -122,6 +122,248 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
+                <a class="has-link-black-ter" href="/2020/05/23/%E5%B8%B8%E8%A7%81I-O%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F/"><i class="fas fa-angle-double-right"></i>常见I/O控制方式</a>
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-23T08:13:45.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-23</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-23T10:12:31.922Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-23</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/%E5%BE%AE%E5%9E%8B%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8E%A7%E5%88%B6/">微型计算机控制</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    9 分钟 读完 (大约 1281 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <p>&emsp;&emsp; <em>cpu和外设之间通过I/O口实现数据交互。为了更好的协调cpu和外设之间的数据传输，cpu需要对外设采取一定的控制方式。常见的控制方式有查询控制方式，中断控制方式和DMA控制方式。</em></p>
+<h2 id="查询控制方式"><a href="#查询控制方式" class="headerlink" title="查询控制方式"></a>查询控制方式</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>&emsp;&emsp;1.数据从外设到cpu时，cpu先要查询外设的状态标志位，判断外设是否准备好了数据，若是准备好了数据，则cpu读取数据。否则，循环查询状态标志位。2.数据从cpu到外设时，cpu先要查询外设是否准备好了接受数据，若准备好了，则cpu将数据放到总线供外设读取，若是外设没有准备好，则cpu循环查询标志位。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>1.由于整个数据传输过程中cpu都处于主动位置，整个通信的节奏都由cpu把控，所以是一种天然的同步控制机制。传输数据可靠。<br>2.逻辑简单，软硬件设计皆不复杂。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>1.cpu必须不断的查询I/0的状态标志位，才能保证不会有数据丢失。这样的机制里面cpu将大部分的时间用在了等待外设上面，实际上为外设传输数据的时间很少，软件时间等成本很高。<br>2.一般情况下，cpu不可能只进行I/0口的数据传输，还要进行一些运算等其他任务，使用这种方法时，只能将这些代码写入循环体之内，这样话，其他的任务越多，cpu每次循环的周期势必越长，故而控制系统的实时性必将大打折扣。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>&emsp;&emsp; 乍一看好像这种控制方法很low，但是老话说“没有最好的，只有最适合的。”具体这种方法的好坏得看实际情况。比如说某些特定场景下cpu的任务量不大，控制的I/O口也不是很多，对实时性要求也不是很高，这种情况下就可以采用查询控制方式。</p>
+<h3 id="个人见解"><a href="#个人见解" class="headerlink" title="个人见解"></a>个人见解</h3><p>&emsp;&emsp; 简单有效才是王道，笔者在以前做单片机智能小车的时候，小伙伴们清一色的查询控制方式，输入也查询，输出也查询，效果很多时候也很不错。关于外设状态标志位的检测，本人觉得也要分外设的种类，一些特定场合的较高级的外设才需要随时对标志位进行检测，许多简单的外设像红外传感器等等，都是直接进行数据输入，管你准备没准备好，直接上手薅数据。这时候想起了香农定理<del>~</del></p>
+<h2 id="中断控制方式"><a href="#中断控制方式" class="headerlink" title="中断控制方式"></a>中断控制方式</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>&emsp;&emsp; 这种控制方式下，cpu正常运行其他的程序，当外设需要与cpu交流时，会向cpu发出中断请求，cpu接收到中断请求后，就转去执行中断程序，当中断程序处理完成之后，就返回继续运行其他程序。</p>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><p>1.省去了查询外设状态标志位和等待外设等待就绪所花费的时间，大大的提高了cpu工作效率。<br>2.由于外设和cpu双线工作，满足了系统实时性的要求。</p>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>1.每一个中断功能的产生，都需要一堆的软硬件进行支持。包括为每个I/O设备分配中断请求号，编写中断服务程序，设计中断管理机制等等。<br>2.每次cpu执行中断服务程序的时候都需要保护断点，转去执行中断程序，恢复断点，返回被中断的程序继续进行等。每执行一次中断都需要cpu额外做很多工作，对于数据传输量很大的系统，则系统的工作效率相对较低。<br>3.中断程序的编写相对较难，很容易造成错误，尤其是用高级语言的时候。</p>
+<h3 id="个人见解-1"><a href="#个人见解-1" class="headerlink" title="个人见解"></a>个人见解</h3><p>&emsp;&emsp; 中断资源的丰富与否是判断cpu性能的重要指标，许多对于外设的控制都离不开中断，比如UART等。</p>
+<h2 id="DMA控制方式"><a href="#DMA控制方式" class="headerlink" title="DMA控制方式"></a>DMA控制方式</h2><h3 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h3><p>数据传输中的战斗鸡，在soc中可直接对内存控制，妥妥的走后门。当外设向DMA控制器发送数据信号后，DMA直接向cpu申请总线使用权，当cpu将大权交给DMA后，DMA直接安排数据入驻内存。</p>
+<h3 id="个人见解-2"><a href="#个人见解-2" class="headerlink" title="个人见解"></a>个人见解</h3><p>&emsp;&emsp; 平常接触较少，但早听闻大名，期待和之交流。</p>
+
+        </div>
+        
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/05/22/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fas fa-angle-double-right"></i>linux常用命令</a>
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-22T13:34:12.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-22</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-22T14:45:45.355Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-22</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    几秒 读完 (大约 90 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <p>cp<br>1.name<br>2.synopsis<br>3.description<br>4.author<br>5.reporting bugs<br>6.copyright<br>7.see also<br>NAME<br>       cp - copy files and directories</p>
+<p>SYNOPSIS<br>       cp [OPTION]… [-T] SOURCE DEST<br>       cp [OPTION]… SOURCE… DIRECTORY<br>       cp [OPTION]… -t DIRECTORY SOURCE…</p>
+<p>DESCRIPTION<br>       Copy SOURCE to DEST, or multiple SOURCE(s) to DIRECTORY.</p>
+<pre><code>Mandatory  arguments  to  long  options are mandatory for short options
+too.
+
+-a, --archive
+       same as -dR --preserve=all
+
+--attributes-only
+       don&apos;t copy the file data, just the attributes
+
+--backup[=CONTROL]
+       make a backup of each existing destination file
+
+-b     like --backup but does not accept an argument</code></pre>
+        </div>
+        
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/05/17/STM32%E4%B9%8BI-O%E9%85%8D%E7%BD%AE/"><i class="fas fa-angle-double-right"></i>STM32之I/O配置</a>
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-17T15:01:28.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-17</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-17T15:37:00.475Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-17</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/STM32/">STM32</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    2 分钟 读完 (大约 236 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <p>&emsp;&emsp;<em>这一场是32局，先对STM32的八种I/O模式做见到那介绍</em></p>
+<h2 id="I-O口模式"><a href="#I-O口模式" class="headerlink" title="I/O口模式"></a>I/O口模式</h2><h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><p>&lt;1&gt;推挽输出：0为低电平；1为高电平。较常用，无双向I/O口功能。<br>&lt;2&gt;开漏输出：0为低电平；1为悬空状态，拉高为高，拉低为低。可以读取pin脚电平信号，有双向I/O口功能。<br>&lt;3&gt;复用推挽输出：内部外设功能，具体复用功能得参考datasheet。<br>&lt;4&gt;复用开漏输出：内部外设功能，具体复用功能得参考datasheet。  </p>
+<h3 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h3><p>&lt;1&gt;带上拉输入：未输入时内部上拉为高电平。<br>&lt;2&gt;带下拉输入：未输入时内部下拉为低电平。<br>&lt;3&gt;浮空输入：未输入时内部电平不确定。可用于检测key。<br>&lt;4&gt;模拟输入：应用于ADC的模拟量输入口。</p>
+
+        </div>
+        
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/05/14/linux-kernel%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%901/"><i class="fas fa-angle-double-right"></i>linux kernel简单解析1</a>
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-05-14T01:05:34.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-14</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-17T15:04:01.953Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-17</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/linux/">linux</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    4 分钟 读完 (大约 668 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <p>文件分析<br>1.’.gitignore’<br>git用来管理内核版本<br>2.’.mailmap’<br>一些相关领域开发者的联系方式<br>3.’COPYING’<br>版权相关<br>4.’COPYING.txt’<br>版权相关<br>5.’CREDITS’<br>感谢文件<br>6.’initrd.img.cpio’<br>传参设备树<br>7.’Kbuild’<br>kernel build ，内核编译，就是用来管理内核编译的。<br>8.’MAINTAINEERS’<br>维护人员<br>9.’Makefile’<br>linux内核的总Makefile，管理内核。<br>10.’mk’<br>九鼎自己添加的开发qt有关的文件。不是linux kernel本身的东西。作用为用这个文件整体来管理kernel目录的配置和编译。有点类似于uboot中的cp.sh<br>11.’README’<br>简单的说明文件<br>12.’REPORTING-BUGS’<br>BUGS 上报</p>
+<p>初识linux kernel配置体系<br>1.庞大且可配置性非常高，配置比较复杂，需要一套专门的机制来解决。</p>
+<p>文件夹：<br>1.arch<br>architecture的缩写。arm，x86等架构相关。<br>2.block<br>块。表示块设备，以块为单位来访问的设备。<br>块设备：多个字节组成的整体为单位进行访问的设备。比如说sd卡，inand，nand，硬盘等都是块设备。<br>block目录下放的就是有关块设备管理的代码。<br>3.crypto<br>加密。目录下放了一些常见的加密算法的c语言代码。比如crc32,md5,sha1等。<br>4.documentation<br>文档。<br>6.drivers<br>驱动目录。里面放驱动代码。<br>7.firmware<br>固件：固化到ic里面运行的软件。像是S5PV210的IROM代码。<br>8.fs<br>file system 文件系统。里面列出了linux支持的各种文件系统。<br>9.include<br>头文件目录。公共头文件目录，各种cpu arch共用的头文件。每种cpu架构特有的文件夹在arch中。<br>10.init<br>初始化。kernel启动时初始化的代码。初始化的时kernel本身。<br>11.ipc<br>inter process communication<br>进程间通信相关代码<br>12.kernel<br>文件夹下放的是内核本身的一些代码<br>13.lib<br>库。都是一些公用的有用的库函数。在内核中不能用c语言中库函数。这里的库函数是用来替代那些表中库函数的。比如：内核中将字符串转化成数字用atoi，但是内核中只能用lib下的atoi；内核中打印函数用printk。</p>
+<p>14.mm<br>memory management 内存管理。<br>15.net<br>网络相关的代码。比如tcp/ip协议都此<br>16.scripts<br>脚本。辅助kernel进行配置编译。<br>17.security<br>安全相关<br>18.sound<br>音频相关<br>19.tools<br>一些有用工具<br>20.user<br>和启动有关。<br>21.virt。内核虚拟机相关的。</p>
+
+        </div>
+        
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+    
+<div class="card">
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
                 <a class="has-link-black-ter" href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/"><i class="fas fa-angle-double-right"></i>windows下fastboot刷机</a>
             
         </h1>
@@ -293,7 +535,7 @@ partition &#39;system&#39; flashed
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/"><i class="fas fa-angle-double-right"></i>内核篇2</a>
+                <a class="has-link-black-ter" href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/"><i class="fas fa-angle-double-right"></i>初识内核篇</a>
             
         </h1>
         
@@ -301,7 +543,7 @@ partition &#39;system&#39; flashed
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-09T03:29:50.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-09</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T06:56:57.993Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-14T01:07:09.150Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-14</time>
                 
                 
                 <div class="level-item">
@@ -345,7 +587,7 @@ partition &#39;system&#39; flashed
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/"><i class="fas fa-angle-double-right"></i>内核篇1</a>
+                <a class="has-link-black-ter" href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/"><i class="fas fa-angle-double-right"></i>初识内核1</a>
             
         </h1>
         
@@ -353,7 +595,7 @@ partition &#39;system&#39; flashed
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-09T00:37:38.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-09</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:44:07.493Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-14T01:07:05.777Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-14</time>
                 
                 
                 <div class="level-item">
@@ -528,124 +770,25 @@ partition &#39;system&#39; flashed
 
 
 
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/05/06/%E5%88%9D%E8%AF%86uboot/"><i class="fas fa-angle-double-right"></i>初识uboot</a>
-            
-        </h1>
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-05-06T09:46:31.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-06</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:44:10.323Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/linux/">linux</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/linux/uboot/">uboot</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    5 分钟 读完 (大约 772 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <div class="content">
-            <p><em>本文学习自朱有鹏老师嵌入式课程，在此标注</em></p>
-<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>&emsp;&emsp;以前学习过一些简单得linux系统移植，发现学的太浅了，脱离了开发板就完全应用不起来，所以现在打算深入得学习一下，力求达到无论是给我什么平台，就给他一顿修改代码，编译下载运行得操作系统跑起来。所以现在打算现从uboot入手开始学习。本文旨在对uboot做一个大概的描述。</p>
-<h1 id="臆想"><a href="#臆想" class="headerlink" title="臆想"></a>臆想</h1><p>&emsp;&emsp;linux kernel刚开始是躺在flash中的，系统上电后不能直接运行起来（体大难移）。所以就需要一段程序来帮他将一切东西都打点好，比如将内存初始化，然后将kernel丢到内存中，然后kernel挂着根文件才能运行起来。那么，仅仅从主要功能上来讲，好像这一段程序只需要初始化一些内存，然后再讲kernel加载到内存就行了。实则非也，由于kernel的启动是不唯一的，也就是说给kernel在启动之前赋予不同的参数，那么它启动 结束之后就是不同的样子，还有就是要判断启动的过程是不是出错了？哪里出错了？肯定得将之表现出来以供人参考，故而需要串口等监视工具，所以还需要初始化串口驱动等等等等。这段功能强大的 程序，都快比的上一个小的操作系统了，她也被称之为bootloader。那么uboot又是何许人也，uboot算是bootloader的一种，但是她是开源的，由于被许多人使用，故而被越来越完善，逐渐成为人们最常用的一种bootloader。</p>
-<h1 id="uboot主要功能"><a href="#uboot主要功能" class="headerlink" title="uboot主要功能"></a>uboot主要功能</h1><p>1.可以上电直接启动：由于soc设计不同，uboot要对应得更改START.S来实现这一功能。<br>2.能够内核启动并为其传参：可以在uboot中设置一定得参数，然后放在内存的特定位置，然后等到内核启动得时候，就回去这些特定得位置解析这些参数，从而按照设定去启动。<br>3.提供系统部署能力：人要能借助uboot完成整个系统（uboot，kernel，rootfs）在flash上的烧录下载工作。<br>4.具有一定得硬件驱动能力：比如inand，串口，lcd等等，根据不同得情景要能够实现soc级和板级一些硬件得驱动能力。<br>5.生命周期：uboot是裸机程序。一旦开始就会单纯运行uboot不能同时其他程序。一旦uboot结束运行，就没法再回到uboot。uboot启动内核之后就废了，想要再回到uboot只能重启。  </p>
 
+    
+<div class="card card-transparent">
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <div class="pagination-previous is-invisible is-hidden-mobile">
+            <a class="is-flex-grow has-text-black-ter" href="/page/0/">上一页</a>
         </div>
-        
-        
-        
-        
-    </div>
+        <div class="pagination-next">
+            <a class="is-flex-grow has-text-black-ter" href="/page/2/">下一页</a>
+        </div>
+        <ul class="pagination-list is-hidden-mobile">
+            
+            <li><a class="pagination-link is-current" href="/">1</a></li>
+            
+            <li><a class="pagination-link has-text-black-ter" href="/page/2/">2</a></li>
+            
+        </ul>
+    </nav>
 </div>
-
-
-
-
-
-
-
-
-
-    
-<div class="card">
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2020/05/02/%E6%B5%85%E8%B0%88I2C/"><i class="fas fa-angle-double-right"></i>浅谈I2C</a>
-            
-        </h1>
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-05-02T01:32:12.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-02</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:45:25.065Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E9%80%9A%E4%BF%A1/I2C/">I2C</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    8 分钟 读完 (大约 1221 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <div class="content">
-            <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>&emsp;&emsp;<em>I2C是一种工作在低速，短距离情况下用来传输数据的通信接口。她总共就只有两根线，一根为SCK(serial clock串行时钟线)，一根为SDA(serial data串行数据线)。由此不难看出，她是一种串行的，同步的通信方式。至于信号传输的方向，这里着重说一下。对于通信双方，有主（master）从（slave）之分，在一个确定的通信环境下面，一个master可以对应多个slave（在通信环境确定的情况下，master和slave的角色一般是确定的，不太容易更改），从而实现分时分对象的控制。那么问题来了，那么多的slave，master是如何辨别哪个是哪个呢，I2C的解决方案是通过地址来区分，一般情况下，每个slave都有一个7bit的地址，其中高四位是器件类型，由生产方来决定，低四位有硬件逻辑来编程（也就是说当硬件电路确定了之后，那么slave的地址也就确定了）。然后，通信双方就可以按照规定好的协议开始愉快的交流了。</em></p>
-<h1 id="I2C通信协议"><a href="#I2C通信协议" class="headerlink" title="I2C通信协议"></a>I2C通信协议</h1><p>&emsp;&emsp; <em>话不多说，直接上图</em>      </p>
-<img src="https://github.com/liujiahao-x/pictures/blob/master/other%20pictures/picture%20of%20%20I2C.png?raw=true" width = "600" height = "300" alt="" align=center/>    
-
-<p>&emsp;&emsp; 当master想要给slave发送信息时（write mode），通信开始后，先给SDA发送1byte的数据，这一段数据为：高7位slave的地址+0。然后等待对应的slave发送一个应答信号（ACK），当master收到ACK后，就给slave发送1byte的数据，然后slave收到信息了，就再给master发送一个ACK，至此，一个通信周期结束。<br>&emsp;&emsp; 当slave要给master发送数据时（read mode），通信开始后，master先给SDA发送1byte的数据，数据为：高7位的slave地址+1（用1和0来区别到底是都还是写）。然后slave先ACK，然后紧接着就发送过来1byte的数据，发送完之后，等待master的ACK，之后一个通信周期结束。<br>&emsp;&emsp; <em>各位看官看到这里，是不是对I2C通信协议有了大概的了解呢，但是心里肯定还是有不少疑惑，比如说，数据全部都是通过电平信号来传输的，那么我怎么知道什么情况下通信开始？什么情况下通信结束？是么样的信号算是应答信号？各种信号在时间上又如何调节呢？莫急，我们再上图</em></p>
-<img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/I2C%E6%97%B6%E5%BA%8F%E5%9B%BE.JPG?raw=true" width = "600" height = "300" alt="" align=center/>      
-
-<p>&emsp;&emsp; <em>这前面这两张图片时三星某soc的datasheet上抠下来的，这里做个说明</em>    </p>
-<p>&emsp;&emsp; 言归正传，大家看到这张图片是不是有点恍恍然的感觉呢，没错，这张时序图可以将我们之前的疑惑一一解除。首先，我们是否还记得最前面说过得I2C是一个同步通信得方式，那么，如何把握节奏就不言而喻了，就是通过时钟信号来调控。当某一个时刻，SCK为高电平时，SDA上出现了一个下降沿，那么意味着，通信开始，要开始搞事情了。然后master二话不说，先丢1byte得数据过去，告诉众slave，该谁了，该干啥了。然后slave如果没挂（通信时有时候从机会莫名奇妙得由于各种奇葩得原因挂掉）的话，就会站出来说一声，在呢（也就是发送一个ACK给master）。那么具体如何实现ACK呢？I2C总线上的数据时1byte1byte传输的，每传输1byte的数据需要8个时钟周期，当1byte数据传输完毕之后，总线会被控制为高电平(总线释放)，当第九个脉冲之前，应答方将之拉低成了低电平，而且在第九个时钟高电平的时候保持低电平则称之为ACK；要是没有反应，继续保持为高电平，则称之为NACK。然后就是数据传输，又是一个字节，然后ACK，之后完事收工，总线在SCL期间恢复到高电平，即完成一个上升沿，一切的一切恢复如初，好像什么都没有发生过。</p>
-<p>&emsp;&emsp; <em>至此，对I2C算是有了一个粗浅的了解。如文章中有不足之处，还望指正。</em></p>
-
-        </div>
-        
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
 </div>
                 
 
@@ -690,7 +833,7 @@ partition &#39;system&#39; flashed
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        8
+                        12
                     </p>
                 </a>
             </div>
@@ -700,7 +843,7 @@ partition &#39;system&#39; flashed
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        8
+                        10
                     </p>
                 </a>
             </div>
@@ -768,7 +911,7 @@ partition &#39;system&#39; flashed
                     <span class="level-item">五月 2020</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">8</span>
+                    <span class="level-item tag">12</span>
                 </span>
             </a>
         </li>
@@ -790,6 +933,82 @@ partition &#39;system&#39; flashed
         
         <article class="media">
             
+            <a href="/2020/05/23/%E5%B8%B8%E8%A7%81I-O%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="常见I/O控制方式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-23T08:13:45.000Z">2020-05-23</time></div>
+                    <a href="/2020/05/23/%E5%B8%B8%E8%A7%81I-O%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F/" class="title has-link-black-ter is-size-6 has-text-weight-normal">常见I/O控制方式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%BE%AE%E5%9E%8B%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8E%A7%E5%88%B6/">微型计算机控制</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/22/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="linux常用命令">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-22T13:34:12.000Z">2020-05-22</time></div>
+                    <a href="/2020/05/22/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">linux常用命令</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/17/STM32%E4%B9%8BI-O%E9%85%8D%E7%BD%AE/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="STM32之I/O配置">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-17T15:01:28.000Z">2020-05-17</time></div>
+                    <a href="/2020/05/17/STM32%E4%B9%8BI-O%E9%85%8D%E7%BD%AE/" class="title has-link-black-ter is-size-6 has-text-weight-normal">STM32之I/O配置</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a> / <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/STM32/">STM32</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/14/linux-kernel%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%901/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="linux kernel简单解析1">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-14T01:05:34.000Z">2020-05-14</time></div>
+                    <a href="/2020/05/14/linux-kernel%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%901/" class="title has-link-black-ter is-size-6 has-text-weight-normal">linux kernel简单解析1</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="windows下fastboot刷机">
@@ -802,82 +1021,6 @@ partition &#39;system&#39; flashed
                     <a href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/" class="title has-link-black-ter is-size-6 has-text-weight-normal">windows下fastboot刷机</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%88%B7%E6%9C%BA/">刷机</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="记一次51汇编作业">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-10T09:01:26.000Z">2020-05-10</time></div>
-                    <a href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/" class="title has-link-black-ter is-size-6 has-text-weight-normal">记一次51汇编作业</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a> / <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/51/">51</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="内核篇2">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T03:29:50.000Z">2020-05-09</time></div>
-                    <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/" class="title has-link-black-ter is-size-6 has-text-weight-normal">内核篇2</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="内核篇1">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T00:37:38.000Z">2020-05-09</time></div>
-                    <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/" class="title has-link-black-ter is-size-6 has-text-weight-normal">内核篇1</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="初识linux内核">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-07T14:25:11.000Z">2020-05-07</time></div>
-                    <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初识linux内核</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
                     </p>
                 </div>
             </div>
@@ -900,7 +1043,7 @@ partition &#39;system&#39; flashed
                 <span class="level-item">linux</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">6</span>
+                <span class="level-item tag">8</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/categories/linux/uboot/">
@@ -916,7 +1059,7 @@ partition &#39;system&#39; flashed
                 <span class="level-item">内核</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">3</span>
+                <span class="level-item tag">4</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/linux/%E5%88%B7%E6%9C%BA/">
@@ -932,7 +1075,7 @@ partition &#39;system&#39; flashed
                 <span class="level-item">嵌入式</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">1</span>
+                <span class="level-item tag">2</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/51/">
@@ -942,7 +1085,23 @@ partition &#39;system&#39; flashed
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/STM32/">
+            <span class="level-start">
+                <span class="level-item">STM32</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
         </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E5%BE%AE%E5%9E%8B%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8E%A7%E5%88%B6/">
+            <span class="level-start">
+                <span class="level-item">微型计算机控制</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/%E9%80%9A%E4%BF%A1/">
             <span class="level-start">
                 <span class="level-item">通信</span>
@@ -983,6 +1142,82 @@ partition &#39;system&#39; flashed
         
         <article class="media">
             
+            <a href="/2020/05/23/%E5%B8%B8%E8%A7%81I-O%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="常见I/O控制方式">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-23T08:13:45.000Z">2020-05-23</time></div>
+                    <a href="/2020/05/23/%E5%B8%B8%E8%A7%81I-O%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F/" class="title has-link-black-ter is-size-6 has-text-weight-normal">常见I/O控制方式</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%BE%AE%E5%9E%8B%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8E%A7%E5%88%B6/">微型计算机控制</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/22/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="linux常用命令">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-22T13:34:12.000Z">2020-05-22</time></div>
+                    <a href="/2020/05/22/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="title has-link-black-ter is-size-6 has-text-weight-normal">linux常用命令</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/17/STM32%E4%B9%8BI-O%E9%85%8D%E7%BD%AE/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="STM32之I/O配置">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-17T15:01:28.000Z">2020-05-17</time></div>
+                    <a href="/2020/05/17/STM32%E4%B9%8BI-O%E9%85%8D%E7%BD%AE/" class="title has-link-black-ter is-size-6 has-text-weight-normal">STM32之I/O配置</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a> / <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/STM32/">STM32</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2020/05/14/linux-kernel%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%901/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="linux kernel简单解析1">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-14T01:05:34.000Z">2020-05-14</time></div>
+                    <a href="/2020/05/14/linux-kernel%E7%AE%80%E5%8D%95%E8%A7%A3%E6%9E%901/" class="title has-link-black-ter is-size-6 has-text-weight-normal">linux kernel简单解析1</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="windows下fastboot刷机">
@@ -995,82 +1230,6 @@ partition &#39;system&#39; flashed
                     <a href="/2020/05/11/fastboot%E5%88%B7%E6%9C%BA/" class="title has-link-black-ter is-size-6 has-text-weight-normal">windows下fastboot刷机</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%88%B7%E6%9C%BA/">刷机</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="记一次51汇编作业">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-10T09:01:26.000Z">2020-05-10</time></div>
-                    <a href="/2020/05/10/%E8%AE%B0%E4%B8%80%E6%AC%A151%E6%B1%87%E7%BC%96%E4%BD%9C%E4%B8%9A/" class="title has-link-black-ter is-size-6 has-text-weight-normal">记一次51汇编作业</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a> / <a class="has-link-grey -link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/51/">51</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="内核篇2">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T03:29:50.000Z">2020-05-09</time></div>
-                    <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%872/" class="title has-link-black-ter is-size-6 has-text-weight-normal">内核篇2</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="内核篇1">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-09T00:37:38.000Z">2020-05-09</time></div>
-                    <a href="/2020/05/09/%E5%86%85%E6%A0%B8%E7%AF%871/" class="title has-link-black-ter is-size-6 has-text-weight-normal">内核篇1</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="初识linux内核">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-07T14:25:11.000Z">2020-05-07</time></div>
-                    <a href="/2020/05/07/%E5%88%9D%E8%AF%86linux%E5%86%85%E6%A0%B8/" class="title has-link-black-ter is-size-6 has-text-weight-normal">初识linux内核</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/linux/">linux</a> / <a class="has-link-grey -link" href="/categories/linux/%E5%86%85%E6%A0%B8/">内核</a>
                     </p>
                 </div>
             </div>
@@ -1093,7 +1252,7 @@ partition &#39;system&#39; flashed
                 <span class="level-item">linux</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">6</span>
+                <span class="level-item tag">8</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/categories/linux/uboot/">
@@ -1109,7 +1268,7 @@ partition &#39;system&#39; flashed
                 <span class="level-item">内核</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">3</span>
+                <span class="level-item tag">4</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/linux/%E5%88%B7%E6%9C%BA/">
@@ -1125,7 +1284,7 @@ partition &#39;system&#39; flashed
                 <span class="level-item">嵌入式</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">1</span>
+                <span class="level-item tag">2</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/51/">
@@ -1135,7 +1294,23 @@ partition &#39;system&#39; flashed
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/STM32/">
+            <span class="level-start">
+                <span class="level-item">STM32</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
         </a></li></ul></li><li>
+        <a class="level is-marginless" href="/categories/%E5%BE%AE%E5%9E%8B%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8E%A7%E5%88%B6/">
+            <span class="level-start">
+                <span class="level-item">微型计算机控制</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
         <a class="level is-marginless" href="/categories/%E9%80%9A%E4%BF%A1/">
             <span class="level-start">
                 <span class="level-item">通信</span>

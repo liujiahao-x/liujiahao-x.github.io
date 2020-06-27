@@ -7,12 +7,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>分类: I2C - liujiahao blog</title>
+<title>分类: 微型计算机控制 - liujiahao blog</title>
 
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="liujiahao blog">
-<meta property="og:url" content="https://liujiahao-x.github.io/categories/%E9%80%9A%E4%BF%A1/I2C/index.html">
+<meta property="og:url" content="https://liujiahao-x.github.io/categories/%E5%BE%AE%E5%9E%8B%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8E%A7%E5%88%B6/index.html">
 <meta property="og:site_name" content="liujiahao blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://liujiahao-x.github.io/images/og_image.png">
@@ -121,9 +121,7 @@
         <ul>
             <li><a href="/categories">分类</a></li>
             
-            <li><a href="/categories/%E9%80%9A%E4%BF%A1/">通信</a></li>
-            
-            <li class="is-active"><a href="#" aria-current="page">I2C</a></li>
+            <li class="is-active"><a href="#" aria-current="page">微型计算机控制</a></li>
         </ul>
         </nav>
     </div>
@@ -135,20 +133,20 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2020/05/02/%E6%B5%85%E8%B0%88I2C/"><i class="fas fa-angle-double-right"></i>浅谈I2C</a>
+                <a class="has-link-black-ter" href="/2020/05/23/%E5%B8%B8%E8%A7%81I-O%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F/"><i class="fas fa-angle-double-right"></i>常见I/O控制方式</a>
             
         </h1>
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-05-02T01:32:12.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-02</time>
+                <time class="level-item has-text-grey" datetime="2020-05-23T08:13:45.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-23</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:45:25.065Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-23T10:12:31.922Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-23</time>
                 
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/%E9%80%9A%E4%BF%A1/">通信</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/%E9%80%9A%E4%BF%A1/I2C/">I2C</a>
+                <a class="has-link-grey -link" href="/categories/%E5%BE%AE%E5%9E%8B%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8E%A7%E5%88%B6/">微型计算机控制</a>
                 </div>
                 
                 
@@ -156,7 +154,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    8 分钟 读完 (大约 1221 个字)
+                    9 分钟 读完 (大约 1281 个字)
                 </span>
                 
                 
@@ -164,16 +162,18 @@
         </div>
         
         <div class="content">
-            <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>&emsp;&emsp;<em>I2C是一种工作在低速，短距离情况下用来传输数据的通信接口。她总共就只有两根线，一根为SCK(serial clock串行时钟线)，一根为SDA(serial data串行数据线)。由此不难看出，她是一种串行的，同步的通信方式。至于信号传输的方向，这里着重说一下。对于通信双方，有主（master）从（slave）之分，在一个确定的通信环境下面，一个master可以对应多个slave（在通信环境确定的情况下，master和slave的角色一般是确定的，不太容易更改），从而实现分时分对象的控制。那么问题来了，那么多的slave，master是如何辨别哪个是哪个呢，I2C的解决方案是通过地址来区分，一般情况下，每个slave都有一个7bit的地址，其中高四位是器件类型，由生产方来决定，低四位有硬件逻辑来编程（也就是说当硬件电路确定了之后，那么slave的地址也就确定了）。然后，通信双方就可以按照规定好的协议开始愉快的交流了。</em></p>
-<h1 id="I2C通信协议"><a href="#I2C通信协议" class="headerlink" title="I2C通信协议"></a>I2C通信协议</h1><p>&emsp;&emsp; <em>话不多说，直接上图</em>      </p>
-<img src="https://github.com/liujiahao-x/pictures/blob/master/other%20pictures/picture%20of%20%20I2C.png?raw=true" width = "600" height = "300" alt="" align=center/>    
-
-<p>&emsp;&emsp; 当master想要给slave发送信息时（write mode），通信开始后，先给SDA发送1byte的数据，这一段数据为：高7位slave的地址+0。然后等待对应的slave发送一个应答信号（ACK），当master收到ACK后，就给slave发送1byte的数据，然后slave收到信息了，就再给master发送一个ACK，至此，一个通信周期结束。<br>&emsp;&emsp; 当slave要给master发送数据时（read mode），通信开始后，master先给SDA发送1byte的数据，数据为：高7位的slave地址+1（用1和0来区别到底是都还是写）。然后slave先ACK，然后紧接着就发送过来1byte的数据，发送完之后，等待master的ACK，之后一个通信周期结束。<br>&emsp;&emsp; <em>各位看官看到这里，是不是对I2C通信协议有了大概的了解呢，但是心里肯定还是有不少疑惑，比如说，数据全部都是通过电平信号来传输的，那么我怎么知道什么情况下通信开始？什么情况下通信结束？是么样的信号算是应答信号？各种信号在时间上又如何调节呢？莫急，我们再上图</em></p>
-<img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/I2C%E6%97%B6%E5%BA%8F%E5%9B%BE.JPG?raw=true" width = "600" height = "300" alt="" align=center/>      
-
-<p>&emsp;&emsp; <em>这前面这两张图片时三星某soc的datasheet上抠下来的，这里做个说明</em>    </p>
-<p>&emsp;&emsp; 言归正传，大家看到这张图片是不是有点恍恍然的感觉呢，没错，这张时序图可以将我们之前的疑惑一一解除。首先，我们是否还记得最前面说过得I2C是一个同步通信得方式，那么，如何把握节奏就不言而喻了，就是通过时钟信号来调控。当某一个时刻，SCK为高电平时，SDA上出现了一个下降沿，那么意味着，通信开始，要开始搞事情了。然后master二话不说，先丢1byte得数据过去，告诉众slave，该谁了，该干啥了。然后slave如果没挂（通信时有时候从机会莫名奇妙得由于各种奇葩得原因挂掉）的话，就会站出来说一声，在呢（也就是发送一个ACK给master）。那么具体如何实现ACK呢？I2C总线上的数据时1byte1byte传输的，每传输1byte的数据需要8个时钟周期，当1byte数据传输完毕之后，总线会被控制为高电平(总线释放)，当第九个脉冲之前，应答方将之拉低成了低电平，而且在第九个时钟高电平的时候保持低电平则称之为ACK；要是没有反应，继续保持为高电平，则称之为NACK。然后就是数据传输，又是一个字节，然后ACK，之后完事收工，总线在SCL期间恢复到高电平，即完成一个上升沿，一切的一切恢复如初，好像什么都没有发生过。</p>
-<p>&emsp;&emsp; <em>至此，对I2C算是有了一个粗浅的了解。如文章中有不足之处，还望指正。</em></p>
+            <p>&emsp;&emsp; <em>cpu和外设之间通过I/O口实现数据交互。为了更好的协调cpu和外设之间的数据传输，cpu需要对外设采取一定的控制方式。常见的控制方式有查询控制方式，中断控制方式和DMA控制方式。</em></p>
+<h2 id="查询控制方式"><a href="#查询控制方式" class="headerlink" title="查询控制方式"></a>查询控制方式</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>&emsp;&emsp;1.数据从外设到cpu时，cpu先要查询外设的状态标志位，判断外设是否准备好了数据，若是准备好了数据，则cpu读取数据。否则，循环查询状态标志位。2.数据从cpu到外设时，cpu先要查询外设是否准备好了接受数据，若准备好了，则cpu将数据放到总线供外设读取，若是外设没有准备好，则cpu循环查询标志位。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>1.由于整个数据传输过程中cpu都处于主动位置，整个通信的节奏都由cpu把控，所以是一种天然的同步控制机制。传输数据可靠。<br>2.逻辑简单，软硬件设计皆不复杂。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>1.cpu必须不断的查询I/0的状态标志位，才能保证不会有数据丢失。这样的机制里面cpu将大部分的时间用在了等待外设上面，实际上为外设传输数据的时间很少，软件时间等成本很高。<br>2.一般情况下，cpu不可能只进行I/0口的数据传输，还要进行一些运算等其他任务，使用这种方法时，只能将这些代码写入循环体之内，这样话，其他的任务越多，cpu每次循环的周期势必越长，故而控制系统的实时性必将大打折扣。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>&emsp;&emsp; 乍一看好像这种控制方法很low，但是老话说“没有最好的，只有最适合的。”具体这种方法的好坏得看实际情况。比如说某些特定场景下cpu的任务量不大，控制的I/O口也不是很多，对实时性要求也不是很高，这种情况下就可以采用查询控制方式。</p>
+<h3 id="个人见解"><a href="#个人见解" class="headerlink" title="个人见解"></a>个人见解</h3><p>&emsp;&emsp; 简单有效才是王道，笔者在以前做单片机智能小车的时候，小伙伴们清一色的查询控制方式，输入也查询，输出也查询，效果很多时候也很不错。关于外设状态标志位的检测，本人觉得也要分外设的种类，一些特定场合的较高级的外设才需要随时对标志位进行检测，许多简单的外设像红外传感器等等，都是直接进行数据输入，管你准备没准备好，直接上手薅数据。这时候想起了香农定理<del>~</del></p>
+<h2 id="中断控制方式"><a href="#中断控制方式" class="headerlink" title="中断控制方式"></a>中断控制方式</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>&emsp;&emsp; 这种控制方式下，cpu正常运行其他的程序，当外设需要与cpu交流时，会向cpu发出中断请求，cpu接收到中断请求后，就转去执行中断程序，当中断程序处理完成之后，就返回继续运行其他程序。</p>
+<h3 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h3><p>1.省去了查询外设状态标志位和等待外设等待就绪所花费的时间，大大的提高了cpu工作效率。<br>2.由于外设和cpu双线工作，满足了系统实时性的要求。</p>
+<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><p>1.每一个中断功能的产生，都需要一堆的软硬件进行支持。包括为每个I/O设备分配中断请求号，编写中断服务程序，设计中断管理机制等等。<br>2.每次cpu执行中断服务程序的时候都需要保护断点，转去执行中断程序，恢复断点，返回被中断的程序继续进行等。每执行一次中断都需要cpu额外做很多工作，对于数据传输量很大的系统，则系统的工作效率相对较低。<br>3.中断程序的编写相对较难，很容易造成错误，尤其是用高级语言的时候。</p>
+<h3 id="个人见解-1"><a href="#个人见解-1" class="headerlink" title="个人见解"></a>个人见解</h3><p>&emsp;&emsp; 中断资源的丰富与否是判断cpu性能的重要指标，许多对于外设的控制都离不开中断，比如UART等。</p>
+<h2 id="DMA控制方式"><a href="#DMA控制方式" class="headerlink" title="DMA控制方式"></a>DMA控制方式</h2><h3 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h3><p>数据传输中的战斗鸡，在soc中可直接对内存控制，妥妥的走后门。当外设向DMA控制器发送数据信号后，DMA直接向cpu申请总线使用权，当cpu将大权交给DMA后，DMA直接安排数据入驻内存。</p>
+<h3 id="个人见解-2"><a href="#个人见解-2" class="headerlink" title="个人见解"></a>个人见解</h3><p>&emsp;&emsp; 平常接触较少，但早听闻大名，期待和之交流。</p>
 
         </div>
         
