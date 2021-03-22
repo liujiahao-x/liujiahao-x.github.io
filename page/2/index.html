@@ -186,7 +186,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-02T01:32:12.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-02</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-05-11T03:45:25.065Z"><i class="far fa-calendar-check">&nbsp;</i>2020-05-11</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2021-03-22T13:27:34.435Z"><i class="far fa-calendar-check">&nbsp;</i>2021-03-22</time>
                 
                 
                 <div class="level-item">
@@ -210,8 +210,11 @@
             <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>&emsp;&emsp;<em>I2C是一种工作在低速，短距离情况下用来传输数据的通信接口。她总共就只有两根线，一根为SCK(serial clock串行时钟线)，一根为SDA(serial data串行数据线)。由此不难看出，她是一种串行的，同步的通信方式。至于信号传输的方向，这里着重说一下。对于通信双方，有主（master）从（slave）之分，在一个确定的通信环境下面，一个master可以对应多个slave（在通信环境确定的情况下，master和slave的角色一般是确定的，不太容易更改），从而实现分时分对象的控制。那么问题来了，那么多的slave，master是如何辨别哪个是哪个呢，I2C的解决方案是通过地址来区分，一般情况下，每个slave都有一个7bit的地址，其中高四位是器件类型，由生产方来决定，低四位有硬件逻辑来编程（也就是说当硬件电路确定了之后，那么slave的地址也就确定了）。然后，通信双方就可以按照规定好的协议开始愉快的交流了。</em></p>
 <h1 id="I2C通信协议"><a href="#I2C通信协议" class="headerlink" title="I2C通信协议"></a>I2C通信协议</h1><p>&emsp;&emsp; <em>话不多说，直接上图</em>      </p>
 <img src="https://github.com/liujiahao-x/pictures/blob/master/other%20pictures/picture%20of%20%20I2C.png?raw=true" width = "600" height = "300" alt="" align=center/>    
+<img src="https://imgtu.com/i/6TCose" width = "600" height = "300" alt="" align=center/>  
+&emsp;&emsp; 当master想要给slave发送信息时（write mode），通信开始后，先给SDA发送1byte的数据，这一段数据为：高7位slave的地址+0。然后等待对应的slave发送一个应答信号（ACK），当master收到ACK后，就给slave发送1byte的数据，然后slave收到信息了，就再给master发送一个ACK，至此，一个通信周期结束。  
+&emsp;&emsp; 当slave要给master发送数据时（read mode），通信开始后，master先给SDA发送1byte的数据，数据为：高7位的slave地址+1（用1和0来区别到底是都还是写）。然后slave先ACK，然后紧接着就发送过来1byte的数据，发送完之后，等待master的ACK，之后一个通信周期结束。
+&emsp;&emsp; *各位看官看到这里，是不是对I2C通信协议有了大概的了解呢，但是心里肯定还是有不少疑惑，比如说，数据全部都是通过电平信号来传输的，那么我怎么知道什么情况下通信开始？什么情况下通信结束？是么样的信号算是应答信号？各种信号在时间上又如何调节呢？莫急，我们再上图*
 
-<p>&emsp;&emsp; 当master想要给slave发送信息时（write mode），通信开始后，先给SDA发送1byte的数据，这一段数据为：高7位slave的地址+0。然后等待对应的slave发送一个应答信号（ACK），当master收到ACK后，就给slave发送1byte的数据，然后slave收到信息了，就再给master发送一个ACK，至此，一个通信周期结束。<br>&emsp;&emsp; 当slave要给master发送数据时（read mode），通信开始后，master先给SDA发送1byte的数据，数据为：高7位的slave地址+1（用1和0来区别到底是都还是写）。然后slave先ACK，然后紧接着就发送过来1byte的数据，发送完之后，等待master的ACK，之后一个通信周期结束。<br>&emsp;&emsp; <em>各位看官看到这里，是不是对I2C通信协议有了大概的了解呢，但是心里肯定还是有不少疑惑，比如说，数据全部都是通过电平信号来传输的，那么我怎么知道什么情况下通信开始？什么情况下通信结束？是么样的信号算是应答信号？各种信号在时间上又如何调节呢？莫急，我们再上图</em></p>
 <img src="https://github.com/liujiahao-x/pictures/blob/master/pictures_blog/I2C%E6%97%B6%E5%BA%8F%E5%9B%BE.JPG?raw=true" width = "600" height = "300" alt="" align=center/>      
 
 <p>&emsp;&emsp; <em>这前面这两张图片时三星某soc的datasheet上抠下来的，这里做个说明</em>    </p>
